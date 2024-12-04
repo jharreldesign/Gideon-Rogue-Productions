@@ -17,7 +17,7 @@ At Gideon Rogue Productions, we leverage a custom-built system that manages key 
 
 ## Database Schema
 
-![Database ERD](images/VenueManager.png)
+![Database ERD](images/GRP-ERD.png)
 
 Our system is powered by a robust relational database, and the ERD (Entity Relationship Diagram) above illustrates the connections between various tables used in our system. Key relationships include:
 
