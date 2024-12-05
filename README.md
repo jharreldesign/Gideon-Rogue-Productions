@@ -22,7 +22,6 @@ At Gideon Rogue Productions, we leverage a custom-built system that manages key 
 Our system is powered by a robust relational database, and the ERD (Entity Relationship Diagram) above illustrates the connections between various tables used in our system. Key relationships include:
 
 - **Venues** to **Shows** and **Bands**: Venues are associated with events that feature specific bands and artists.
-- **Tickets** and **Attendees**: Information about ticket sales, including user data and ticket status.
 - **Staff Assignments**: Employees are assigned to various tasks at each venue, ensuring smooth event operations.
 
 ## Website Wireframe
@@ -43,6 +42,10 @@ Here is a wireframe that outlines the layout of our website. It consists of two 
 ## Features
 
 - **Event Management**: Add, edit, and schedule events for different venues.
-- **Ticketing System**: Integration with a ticketing platform to handle sales and provide event access.
 - **User Management**: Admin tools for managing staff and their roles.
 - **Responsive Design**: The site adjusts for desktop and mobile users for both customer-facing pages and admin dashboards.
+
+
+## Stretch Goals
+- **Ticketing System**: Integration with a ticketing platform to handle sales and provide event access.
+- **Venue Billing System**: The company will implement a billing system that will keep track of the invoices that come through the production of each show.
