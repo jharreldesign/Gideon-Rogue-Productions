@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';  // Import Image from next/image
 import styles from '../styles/Header.module.css';
+import Link from 'next/link';  // Import Link from next/link
 
 const Header: React.FC = () => {
   return (
@@ -16,8 +17,8 @@ const Header: React.FC = () => {
           />
         </div>
         <ul className={styles.navLinks}>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Events</a></li>
+          <li><Link href="/">Home</Link></li>  {/* Link to Home page */}
+          <li><Link href="/event/EventList">Events</Link></li>  {/* Link to Events page */}
           <li><a href="#">About</a></li>
           <li><a href="#">Contact</a></li>
         </ul>
