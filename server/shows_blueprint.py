@@ -13,7 +13,6 @@ def format_show_dates(show):
     else:
         show['showdate'] = datetime.strptime(show['showdate'], '%a, %d %b %Y %H:%M:%S GMT').strftime('%Y-%m-%d')
     
-    # Format showtime
     if isinstance(show['showtime'], (datetime, date)):
         show['showtime'] = show['showtime'].strftime('%H:%M:%S')
     else:
@@ -25,18 +24,14 @@ def format_show_dates(show):
 @shows_blueprint.route('/shows', methods=['GET'])
 def shows_index():
     try:
-        # Establish a connection to the database
         connection = get_db_connection()
         cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-        # Execute a query to get all shows, ordered by showdate and showtime
         cursor.execute("SELECT * FROM shows ORDER BY showdate, showtime")
         shows = cursor.fetchall()
 
-        # Format the dates and times
         shows = [format_show_dates(show) for show in shows]
 
-        # Close the connection and return the shows as a JSON response
         connection.close()
         return jsonify({"shows": shows}), 200
 
@@ -49,16 +44,12 @@ def shows_index():
 @token_required
 def create_show():
     try:
-        # Get the data from the request
         new_show = request.json
 
-        # Ensure showtime is in the correct format if provided
         if isinstance(new_show['showtime'], str):
-            # If it's a string, it should already be in the 'YYYY-MM-DD HH:MM:SS' format
             showtime = new_show['showtime']
         else:
-            # If not, convert it into a proper string (e.g., 'YYYY-MM-DD HH:MM:SS')
-            showtime = str(new_show['showtime']) if new_show['showtime'] else '1970-01-01 00:00:00'  # Fallback if empty
+            showtime = str(new_show['showtime']) if new_show['showtime'] else '1970-01-01 00:00:00'
 
         # Connect to the DB and insert the show
         connection = get_db_connection()
@@ -70,18 +61,17 @@ def create_show():
         """, (
             new_show['showdate'], 
             new_show['showdescription'], 
-            showtime,  # Use the formatted showtime
+            showtime,  
             new_show['location'], 
-            new_show['bandsplaying'],  # List of bands can be serialized as JSON
+            new_show['bandsplaying'],  
             new_show['ticketprice'],
-            g.user['id']  # Add user_id from token
+            g.user['id'] 
         ))
 
         created_show = cursor.fetchone()
         connection.commit()
         connection.close()
 
-        # Format the dates and times for the created show
         created_show = format_show_dates(created_show)
 
         return jsonify({"show": created_show}), 201
@@ -93,22 +83,18 @@ def create_show():
 @shows_blueprint.route('/shows/<show_id>', methods=['GET'])
 def show_show(show_id):
     try:
-        # Establish a connection to the database
         connection = get_db_connection()
         cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-        # Execute a query to get the specific show by ID
         cursor.execute("""
             SELECT * FROM shows WHERE id = %s
         """, (show_id,))
 
         show = cursor.fetchone()
 
-        # Format the dates and times if the show is found
         if show:
             show = format_show_dates(show)
 
-        # Close the connection
         connection.close()
 
         if show:
@@ -133,16 +119,13 @@ def update_show(show_id):
         if show_to_update is None:
             return jsonify({"error": "Show not found"}), 404
 
-        # Check if the user is authorized to update the show
         if show_to_update["user_id"] != g.user["id"]:
             return jsonify({"error": "Unauthorized"}), 401
 
-        # Ensure that showtime is in the correct format
         showdate = updated_show_data.get('showdate', show_to_update['showdate'])
         showtime = updated_show_data.get('showtime', show_to_update['showtime'])
 
-        if isinstance(showtime, str) and len(showtime) == 8:  # Time format 'HH:MM:SS'
-            # If it's only a time string, combine it with showdate to make a full timestamp
+        if isinstance(showtime, str) and len(showtime) == 8:  
             showtime = f"{showdate} {showtime}"
 
         cursor.execute("""
@@ -153,7 +136,7 @@ def update_show(show_id):
         """, (
             showdate,
             updated_show_data.get('showdescription', show_to_update['showdescription']),
-            showtime,  # Use the combined full timestamp
+            showtime,  
             updated_show_data.get('location', show_to_update['location']),
             updated_show_data.get('bandsplaying', show_to_update['bandsplaying']),
             updated_show_data.get('ticketprice', show_to_update['ticketprice']),

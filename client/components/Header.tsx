@@ -8,17 +8,22 @@ const Header: React.FC = () => {
     <header className={styles.header}>
       <nav className={styles.navbar}>
         <div className={styles.logo}>
-          <Image 
-            src="/images/Logo.png" 
-            alt="Logo" 
-            width={150}   // Set width
-            height={50}   // Set height
-            className={styles.logoImage} 
-          />
+          <Link href="/">
+            <Image 
+              src="/images/Logo.png" 
+              alt="Logo" 
+              width={150} 
+              height={50}
+              className={styles.logoImage} 
+            />
+          </Link>
         </div>
         <ul className={styles.navLinks}>
-          <li><Link href="/">Home</Link></li>  {/* Link to Home page */}
-          <li><Link href="/event/EventList">Events</Link></li>  {/* Link to Events page */}
+          <li><Link href="/">Home</Link></li>  
+          <li><Link href="/event/EventList">Events</Link></li>
+          <li><Link href="/shows/ShowCreate">Schedule A Show</Link></li>
+          <li><Link href="/venue/VenueList">View Venues</Link></li>
+          <li><Link href="/venue/VenueCreate">Create Venues</Link></li>
           <li><a href="#">About</a></li>
           <li><a href="#">Contact</a></li>
         </ul>

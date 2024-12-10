@@ -27,7 +27,7 @@ const Dashboard: React.FC = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('Response data:', data); // Log the full response for debugging
+        console.log('Response data:', data);
         if (data.error) {
           setError(data.error);
         } else {
@@ -39,8 +39,8 @@ const Dashboard: React.FC = () => {
             return;
           }
 
-          setIsSuperuser(data.is_superuser);  // Save the superuser status
-          console.log('Is superuser:', data.is_superuser);  // Log superuser status
+          setIsSuperuser(data.is_superuser);  
+          console.log('Is superuser:', data.is_superuser);  
           
           // Fetch users if the logged-in user is a superuser
           if (data.is_superuser) {
@@ -61,14 +61,14 @@ const Dashboard: React.FC = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('Fetched users:', data); // Log the fetched users for debugging
+        console.log('Fetched users:', data); 
         if (data.error) {
           setError(data.error);
         } else {
           if (Array.isArray(data) && data.length > 0) {
-            setUsers(data);  // Save the list of users
+            setUsers(data);  
           } else {
-            setUsers([]);  // In case the response is an empty array or not as expected
+            setUsers([]);  
             console.log('No users found');
           }
         }
