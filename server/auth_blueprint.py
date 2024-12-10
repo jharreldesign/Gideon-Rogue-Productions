@@ -8,8 +8,8 @@ from flask_cors import CORS  # Import CORS
 
 authentication_blueprint = Blueprint('authentication_blueprint', __name__)
 
-# Enable CORS for the entire app or blueprint
-CORS(authentication_blueprint)  # This allows cross-origin requests for this blueprint
+# Enable CORS for this blueprint (allows cross-origin requests)
+CORS(authentication_blueprint, origins=["http://localhost:3000"], supports_credentials=True)
 
 # Function to check if the user is a superuser
 def is_superuser():
@@ -17,8 +17,7 @@ def is_superuser():
     if not token:
         return False
     try:
-        # Decode the token to check the user's superuser status
-        token = token.split(" ")[1]  # Extract the token from "Bearer <token>"
+        token = token.split(" ")[1]  # Extract token from "Bearer <token>"
         decoded_token = jwt.decode(token, os.getenv('JWT_SECRET'), algorithms=["HS256"])
         return decoded_token.get("is_superuser", False)
     except jwt.ExpiredSignatureError:
@@ -26,7 +25,7 @@ def is_superuser():
     except jwt.InvalidTokenError:
         return False
 
-# Route for signing up new users, including the ability to designate a superuser
+# Route for signing up new users, including superuser option
 @authentication_blueprint.route('/auth/signup', methods=['POST'])
 def signup():
     try:
@@ -72,7 +71,6 @@ def signup():
     finally:
         connection.close()
 
-
 # Route for signing in existing users
 @authentication_blueprint.route('/auth/signin', methods=["POST"])
 def signin():
@@ -108,55 +106,53 @@ def signin():
     finally:
         connection.close()
 
-
-
-# Route for creating shows (only accessible by superusers)
-@authentication_blueprint.route('/shows', methods=['POST'])
-def create_show():
-    if not is_superuser():  # Check if the user is a superuser
-        return jsonify({"error": "Sorry you can not create this show. Please speak with your manager if you have any questions."}), 403
+# Route to get the current user info based on the provided token
+@authentication_blueprint.route('/auth/me', methods=['GET'])
+def get_current_user():
+    token = request.headers.get('Authorization')
+    if not token:
+        return jsonify({"error": "Unauthorized"}), 401
 
     try:
-        show_data = request.get_json()
+        token = token.split(" ")[1]  # Extract token from "Bearer <token>"
+        decoded_token = jwt.decode(token, os.getenv('JWT_SECRET'), algorithms=["HS256"])
+        user_id = decoded_token["id"]
+
+        # Fetch user details from the database using the user_id
+        connection = get_db_connection()
+        cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        cursor.execute("SELECT id, username, is_superuser FROM users WHERE id = %s;", (user_id,))
+        user = cursor.fetchone()
+        connection.close()
+
+        if user:
+            return jsonify(user), 200  # Include is_superuser field here
+        else:
+            return jsonify({"error": "User not found"}), 404
+
+    except jwt.ExpiredSignatureError:
+        return jsonify({"error": "Token expired"}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({"error": "Invalid token"}), 401
+
+
+# Route to view all users (accessible only for superusers)
+@authentication_blueprint.route('/auth/users', methods=['GET'])
+def get_all_users():
+    if not is_superuser():
+        return jsonify({"error": "Unauthorized"}), 403
+
+    try:
         connection = get_db_connection()
         cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-        # Insert the show into the database
-        cursor.execute("INSERT INTO shows (showdate, showdescription) VALUES (%s, %s) RETURNING id, showdate, showdescription;",
-                       (show_data["showdate"], show_data["showdescription"]))
-        created_show = cursor.fetchone()
-        connection.commit()
-
-        return jsonify({"show": created_show}), 201
-    except Exception as error:
-        return jsonify({"error": str(error)}), 400
-    finally:
+        # Fetch all users from the database
+        cursor.execute("SELECT id, username, is_superuser FROM users;")
+        users = cursor.fetchall()
         connection.close()
 
+        # Return the list of users
+        return jsonify(users), 200
 
-# Route for creating venues (only accessible by superusers)
-@authentication_blueprint.route('/venues', methods=['POST'])
-def create_venue():
-    if not is_superuser():  # Check if the user is a superuser
-        return jsonify({"error": "Sorry you can not create this show. Please speak with your manager if you have any questions."}), 403
-
-    try:
-        venue_data = request.get_json()
-        connection = get_db_connection()
-        cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-
-        # Insert the venue into the database, including all columns (id, capacity, venuename, location, venuemanager)
-        cursor.execute(
-            "INSERT INTO venues (capacity, venuename, location, venuemanager) "
-            "VALUES (%s, %s, %s, %s) "
-            "RETURNING id, capacity, venuename, location, venuemanager;",
-            (venue_data["capacity"], venue_data["venuename"], venue_data["location"], venue_data["venuemanager"])
-        )
-        created_venue = cursor.fetchone()
-        connection.commit()
-
-        return jsonify({"venue": created_venue}), 201
     except Exception as error:
-        return jsonify({"error": str(error)}), 400
-    finally:
-        connection.close()
+        return jsonify({"error": str(error)}), 500
