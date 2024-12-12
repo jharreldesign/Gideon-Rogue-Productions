@@ -35,9 +35,9 @@ const BandList: React.FC = () => {
           setError(data.error);
         } else {
           setUsername(data.username);
-          setIsAdmin(data.is_superuser || false);
+          setIsAdmin(data.admin || true);
 
-          if (data.is_superuser) {
+          if (data.role === "admin") {
             fetchBands(token);
           } else {
             setError('You do not have permission to view this page.');

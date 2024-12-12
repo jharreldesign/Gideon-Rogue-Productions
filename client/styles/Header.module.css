@@ -1,64 +1,124 @@
+/* Header Styling */
 .header {
-    width: 100%;
-    background-color: #333; 
-    position: sticky; 
-    top: 0;
-    z-index: 1000; 
-  }
-  
+  width: 100%;
+  background-color: #333;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logoImage {
+  width: 150px;
+  height: auto;
+}
+
+.navLinks {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  align-items: center; /* Align items horizontally */
+}
+
+.navLinks li {
+  display: inline-block;
+}
+
+.navLinks a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.navLinks a:hover {
+  color: #f39c12;
+}
+
+/* Dropdown Styling for Admin Menu */
+.dropdown {
+  position: relative;
+  display: flex;
+  align-items: center; /* Align dropdown button with other links */
+}
+
+.dropdownButton {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center; /* Center the text in the button */
+}
+
+.dropdownButton:hover {
+  background-color: #444;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #333;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  min-width: 160px;
+  display: none; /* Initially hidden */
+  z-index: 999; /* Ensure dropdown is on top */
+}
+
+.dropdownMenu li {
+  padding: 10px;
+}
+
+.dropdownMenu li a {
+  color: white;
+  text-decoration: none;
+}
+
+.dropdownMenu li a:hover {
+  background-color: #444;
+}
+
+/* Show the dropdown menu when the button is clicked */
+.dropdown:hover .dropdownMenu {
+  display: block; /* Show menu on hover */
+}
+
+/* Responsive Styling */
+@media screen and (max-width: 768px) {
   .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    max-width: 1200px; 
-    margin: 0 auto; 
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-  }
-  
-  .logoImage {
-    width: 150px; 
-    height: auto;
-  }
-  
+
   .navLinks {
-    list-style: none;
-    display: flex;
-    gap: 20px; 
+    flex-direction: column;
+    gap: 10px;
   }
-  
+
   .navLinks li {
-    display: inline-block;
+    width: 100%;
   }
-  
-  .navLinks a {
-    text-decoration: none;
-    color: #fff;
-    font-size: 16px;
-    transition: color 0.3s ease; 
+
+  /* Adjust dropdown for mobile */
+  .dropdownMenu {
+    position: static;
+    width: 100%;
   }
-  
-  .navLinks a:hover {
-    color: #f39c12; 
-  }
-  
-  @media screen and (max-width: 768px) {
-    .navbar {
-      flex-direction: column; 
-      align-items: flex-start;
-    }
-  
-    .navLinks {
-      flex-direction: column;
-      gap: 10px;
-    }
-  
-    .navLinks li {
-      width: 100%;
-    }
-  }
-  
+}

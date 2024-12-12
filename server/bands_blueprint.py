@@ -33,15 +33,16 @@ def create_band():
         cursor = connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
         cursor.execute("""
-            INSERT INTO bands (bandname, hometown, genre, yearstarted, membernames)
-            VALUES (%s, %s, %s, %s, %s)
+            INSERT INTO bands (bandname, hometown, genre, yearstarted, membernames, bandphoto)
+            VALUES (%s, %s, %s, %s, %s, %s)
             RETURNING *
         """, (
             new_band['bandname'], 
             new_band['hometown'], 
             new_band['genre'], 
             new_band['yearstarted'], 
-            new_band['membernames']
+            new_band['membernames'],
+            new_band['bandphoto']  
         ))
 
         created_band = cursor.fetchone()
@@ -96,7 +97,7 @@ def update_band(band_id):
 
         cursor.execute("""
             UPDATE bands 
-            SET bandname = %s, hometown = %s, genre = %s, yearstarted = %s, membernames = %s
+            SET bandname = %s, hometown = %s, genre = %s, yearstarted = %s, membernames = %s, bandphoto = %s
             WHERE id = %s
             RETURNING *
         """, (
@@ -105,6 +106,7 @@ def update_band(band_id):
             updated_band_data.get('genre', band_to_update['genre']),
             updated_band_data.get('yearstarted', band_to_update['yearstarted']),
             updated_band_data.get('membernames', band_to_update['membernames']),
+            updated_band_data.get('bandphoto', band_to_update['bandphoto']), 
             band_id
         ))
 
