@@ -82,7 +82,7 @@ const Index = () => {
       
       <section>
         {/* Optionally pass the fetched shows to the EventList component */}
-        {/* <EventList shows={shows} /> */}
+        <EventList shows={shows} />
       </section>
 
       {error && <p className={styles.error}>{error}</p>} {/* Display error message */}
