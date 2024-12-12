@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
-import Header from '../../components/Header';
-
-
 interface Show {
   id: number;
   showdate: string;
@@ -16,49 +13,41 @@ interface Show {
 
 const EventList: React.FC = () => {
   const [username, setUsername] = useState<string>('');
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [shows, setShows] = useState<Show[]>([]);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isSuperUser, setIsSuperUser] = useState<boolean>(false);
 
   useEffect(() => {
+    // Fetch shows regardless of login status
+    fetchShows();
+
+    // Check login status and fetch user details if logged in
     const token = localStorage.getItem('token');
-    if (!token) {
-      setError('No token found. Please log in.');
-      return;
-    }
-
-    fetch('http://127.0.0.1:5000/auth/me', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.error) {
-          setError(data.error);
-        } else {
-          setUsername(data.username);
-          setIsAdmin(data.is_superuser || false);
-
-          if (data.is_superuser) {
-            fetchShows(token);
-          } else {
-            setError('You do not have permission to view this page.');
-          }
-        }
+    if (token) {
+      setIsLoggedIn(true);
+      fetch('http://127.0.0.1:5000/auth/me', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .catch((err: Error) =>
-        setError(`Error fetching user details: ${err.message}`)
-      );
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error) {
+            setError(data.error);
+          } else {
+            setUsername(data.username);
+            setIsSuperUser(data.isSuperUser);
+          }
+        })
+        .catch((err: Error) => setError(`Error fetching user details: ${err.message}`));
+    }
   }, []);
 
-  const fetchShows = (token: string) => {
+  const fetchShows = () => {
     fetch('http://127.0.0.1:5000/shows', {
       method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
     })
       .then((response) => response.json())
       .then((data) => {
@@ -68,51 +57,42 @@ const EventList: React.FC = () => {
           setShows(data.shows);
         }
       })
-      .catch((err: Error) =>
-        setError(`Error fetching shows: ${err.message}`)
-      );
+      .catch((err: Error) => setError(`Error fetching shows: ${err.message}`));
   };
 
   return (
     <div className="event-list-container" style={styles.container}>
-      <Header />
+      {/* Pass user data as props */}
       <h1 style={styles.title}>Event List</h1>
       {error && <p style={styles.error}>{error}</p>}
-      {username && <p style={styles.welcome}>Welcome, {username}!</p>}
-
-      {isAdmin ? (
-        <div>
-          {shows.length > 0 ? (
-            <ul style={styles.showList}>
-              {shows.map((show) => {
-                return (
-                  <li key={show.id} style={styles.showItem}>
-                    <h2>{show.bandsplaying.join(', ')}</h2>
-                    <h4>{show.showdescription}</h4>
-                    <p>
-                      <strong>Date:</strong> {new Date(show.showdate).toLocaleDateString()}
-                    </p>
-                    <p>
-                      <strong>Time:</strong> {show.showtime}
-                    </p>
-                    <p>
-                      <strong>Location:</strong> {show.location}
-                    </p>
-                    <Link href={`/shows/${show.id}`} passHref>
-                      <button style={styles.viewDetailsButton}>View Details</button>
-                    </Link>
-
-                  </li>
-                );
-              })}
-            </ul>
-          ) : (
-            <p style={styles.noShows}>No events found.</p>
-          )}
-        </div>
-      ) : (
-        <p style={styles.noPermission}>You do not have permission to view this page.</p>
-      )}
+      <div>
+        {shows.length > 0 ? (
+          <ul style={styles.showList}>
+            {shows.map((show) => {
+              return (
+                <li key={show.id} style={styles.showItem}>
+                  <h2>{show.bandsplaying.join(', ')}</h2>
+                  <h4>{show.showdescription}</h4>
+                  <p>
+                    <strong>Date:</strong> {new Date(show.showdate).toLocaleDateString()}
+                  </p>
+                  <p>
+                    <strong>Time:</strong> {show.showtime}
+                  </p>
+                  <p>
+                    <strong>Location:</strong> {show.location}
+                  </p>
+                  <Link href={`/shows/${show.id}`} passHref>
+                    <button style={styles.viewDetailsButton}>View Details</button>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p style={styles.noShows}>No events found.</p>
+        )}
+      </div>
     </div>
   );
 };
@@ -128,11 +108,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     textAlign: 'center',
     fontSize: '2rem',
     marginBottom: '20px',
-  },
-  welcome: {
-    textAlign: 'center',
-    fontSize: '1.2rem',
-    color: '#4CAF50',
   },
   error: {
     color: 'red',
@@ -163,10 +138,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     textAlign: 'center',
     fontSize: '1.2rem',
     color: '#333',
-  },
-  noPermission: {
-    color: 'red',
-    textAlign: 'center',
   },
 };
 

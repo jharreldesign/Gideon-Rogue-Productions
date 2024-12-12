@@ -23,16 +23,28 @@ const Login = () => {
       });
 
       // Log the response status and data for debugging
-      const data = await response.json();
-      console.log('Response:', data);
+      console.log('Response Status:', response.status);
+      
+      if (!response.ok) {
+        // If the response is not OK, throw an error
+        const data = await response.json();
+        console.log('Error Response Data:', data);
+        setError(data.error || 'An error occurred during login.');
+        return;
+      }
 
-      if (response.ok) {
-        localStorage.setItem('token', data.token);  // Save the token
+      const data = await response.json();
+      console.log('Login Success:', data);
+
+      // Assuming your API returns the token like this:
+      if (data.token) {
+        // Save token to localStorage after login
+        localStorage.setItem('token', data.token);
+        console.log('Token saved:', data.token); // Log the token
         alert(`Welcome, ${data.user.username}!`);
         router.push('/dashboard'); // Correct path for navigating to the dashboard
       } else {
-        // Handle the case where the response is not ok (e.g., 401 Unauthorized)
-        setError(data.error || 'An error occurred during login.');
+        setError('Failed to retrieve token from response.');
       }
       
     } catch (err: unknown) {
@@ -49,6 +61,7 @@ const Login = () => {
 
   return (
     <div style={{ maxWidth: '400px', margin: 'auto', padding: '1em' }}>
+      {/* Pass a default user prop */}
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <div style={{ marginBottom: '1em' }}>

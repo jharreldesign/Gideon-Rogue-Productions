@@ -6,6 +6,10 @@ import { useRouter } from "next/navigation";
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [streetAddress, setStreetAddress] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [staffPosition, setStaffPosition] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const router = useRouter();
@@ -21,22 +25,27 @@ const Signup = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({
+          username,
+          password,
+          email,
+          street_address: streetAddress,
+          phone_number: phoneNumber,
+          staff_position: staffPosition,
+        }),
       });
 
       if (response.ok) {
         const data = await response.json();
         setSuccess(`Signup successful! Welcome, ${data.user.username}`);
         setTimeout(() => {
-          router.push("/dashboard"); // Redirect to the dashboard page after successful signup
+          router.push("/dashboard");
         }, 2000);
       } else {
-        // Check if the response contains an error message
         const errorData = await response.json();
         setError(errorData.error || "Signup failed. Please try again.");
       }
-    } catch (err: unknown) {
-      // Handle error type properly
+    } catch (err) {
       if (err instanceof Error) {
         setError(`Error: ${err.message}`);
       } else {
@@ -67,6 +76,45 @@ const Signup = () => {
             onChange={(e) => setPassword(e.target.value)}
             style={{ width: "100%", padding: "0.5em", margin: "0.5em 0" }}
             required
+          />
+        </div>
+        <div style={{ marginBottom: "1em" }}>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={{ width: "100%", padding: "0.5em", margin: "0.5em 0" }}
+            required
+          />
+        </div>
+        <div style={{ marginBottom: "1em" }}>
+          <label>Street Address:</label>
+          <input
+            type="text"
+            value={streetAddress}
+            onChange={(e) => setStreetAddress(e.target.value)}
+            style={{ width: "100%", padding: "0.5em", margin: "0.5em 0" }}
+            required
+          />
+        </div>
+        <div style={{ marginBottom: "1em" }}>
+          <label>Phone Number:</label>
+          <input
+            type="text"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            style={{ width: "100%", padding: "0.5em", margin: "0.5em 0" }}
+            required
+          />
+        </div>
+        <div style={{ marginBottom: "1em" }}>
+          <label>Staff Position:</label>
+          <input
+            type="text"
+            value={staffPosition}
+            onChange={(e) => setStaffPosition(e.target.value)}
+            style={{ width: "100%", padding: "0.5em", margin: "0.5em 0" }}
           />
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}

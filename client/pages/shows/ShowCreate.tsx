@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
-import Header from "../../components/Header";
 
 interface FormData {
   showdate: string;
@@ -125,7 +124,6 @@ const ShowCreate: React.FC = () => {
 
   return (
     <div>
-      <Header />
       <h2>Create a New Show</h2>
       <form onSubmit={handleSubmit}>
         <div>

@@ -10,10 +10,15 @@ from flask_cors import CORS
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+
+# Allow only specific origins to access the API
+CORS(app, origins=["http://localhost:3000", "http://yourfrontenddomain.com"])
+
+# Register blueprints for various routes
 app.register_blueprint(authentication_blueprint)
 app.register_blueprint(venuemanager_blueprint)
 app.register_blueprint(shows_blueprint)
 app.register_blueprint(venues_blueprint)
 app.register_blueprint(bands_blueprint)
+
 app.run()

@@ -1,0 +1,121 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .heroImage {
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .heroImage::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+  
+  .heroText {
+    position: relative;
+    z-index: 2;
+  }
+  
+  .heroText h1 {
+    font-size: 2.5rem;
+    margin: 0;
+  }
+  
+  .heroText p {
+    font-size: 1.2rem;
+    margin: 0;
+  }
+  
+  .venueInfo {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .venueInfo div {
+    flex: 1;
+  }
+  
+  .venueInfo strong {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+  
+  .venueInfo p {
+    margin: 0;
+  }
+  
+  .eventList {
+    margin-top: 20px;
+  }
+  
+  .eventItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .eventItem:last-child {
+    border-bottom: none;
+  }
+  
+  .eventItem h3 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  
+  .eventItem p {
+    margin: 0;
+    color: #555;
+  }
+  
+  .eventLink {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+  }
+  
+  .eventLink:hover {
+    text-decoration: underline;
+  }
+  
+  .backLink {
+    margin-top: 20px;
+  }
+  
+  .backLink a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+  }
+  
+  .backLink a:hover {
+    text-decoration: underline;
+  }
+  

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
-import Header from '../../components/Header';
 
 const VenueCreate: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -61,7 +60,6 @@ const VenueCreate: React.FC = () => {
 
   return (
     <div>
-      <Header />
       <h2>Create a New Venue</h2>
       <form onSubmit={handleSubmit}>
         <div>

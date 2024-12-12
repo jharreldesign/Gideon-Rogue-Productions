@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
-import Header from '../../components/Header';
-
 interface Band {
   id: number;
   bandname: string;
@@ -73,7 +71,6 @@ const BandList: React.FC = () => {
 
   return (
     <div className="band-list-container" style={styles.container}>
-      <Header />
       <h1 style={styles.title}>Band List</h1>
       {error && <p style={styles.error}>{error}</p>}
       {username && <p style={styles.welcome}>Welcome, {username}!</p>}

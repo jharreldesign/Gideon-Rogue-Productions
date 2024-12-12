@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Header from '../../components/Header';
+
+import style from '../../styles/EventDetails.module.css';
 
 interface Show {
   id: number;
@@ -41,97 +42,79 @@ const ShowDetail: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-5">
-      <Header /> {/* Add the Header component here */}
-
+    <div className={style.container}>
       {error && <p className="text-red-500">{error}</p>}
 
       {show && (
         <>
           {/* Hero Image */}
           <div
-            className="relative h-72 bg-cover bg-center"
+            className={style.heroImage}
             style={{
               backgroundImage: `url(${show.bandPhoto})`,
             }}
           >
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white">
-              <h1 className="text-4xl font-bold">{show.bandsplaying.join(' & ')}</h1>
-              <p className="text-lg">{new Date(show.showdate).toLocaleDateString()}</p>
+            <div className={style.heroText}>
+              <h1>{show.bandsplaying.join(' & ')}</h1>
+              <p>{new Date(show.showdate).toLocaleDateString()}</p>
             </div>
           </div>
 
-          {/* Social Media and Event Info */}
-          <div className="my-4 flex gap-4">
-            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gray-700 text-white rounded">
-              Facebook
-            </a>
-            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gray-700 text-white rounded">
-              Instagram
-            </a>
-            <a href="https://www.twitter.com/" target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gray-700 text-white rounded">
-              Twitter
-            </a>
-            <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gray-700 text-white rounded">
-              TikTok
-            </a>
-            <a href="mailto:info@masqueradeatlanta.com" target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gray-700 text-white rounded">
-              Email
-            </a>
-            <a href="https://open.spotify.com/" target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gray-700 text-white rounded">
-              Spotify
-            </a>
+          {/* Show Info */}
+          <div className={style.eventInfo}>
+            <div>
+              <strong>Date:</strong>
+              <p>{new Date(show.showdate).toLocaleDateString()}</p>
+            </div>
+            <div>
+              <strong>Time:</strong>
+              <p>{show.showtime}</p>
+            </div>
+            <div>
+              <strong>Location:</strong>
+              <p>{show.location}</p>
+            </div>
+            <div>
+              <strong>Price:</strong>
+              <p>{show.ticketPrice}</p>
+            </div>
           </div>
 
-          {/* Show Details */}
-          <div className="my-8">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <strong>Date:</strong>
-                <p>{new Date(show.showdate).toLocaleDateString()}</p>
-              </div>
-              <div>
-                <strong>Time:</strong>
-                <p>{show.showtime}</p>
-              </div>
-              <div>
-                <strong>Location:</strong>
-                <p>{show.location}</p>
-              </div>
-              <div>
-                <strong>Price:</strong>
-                <p>{show.ticketPrice}</p>
-              </div>
-            </div>
+          {/* Description */}
+          <h2 className="text-xl font-semibold">Description</h2>
+          <p>{show.showdescription}</p>
 
-            <h2 className="mt-6 text-xl font-semibold">Description</h2>
-            <p>{show.showdescription}</p>
-            
-            {/* Action Buttons */}
-            <div className="my-8 flex gap-4">
-              <a href="https://www.masqueradeatlanta.com/tickets" className="px-6 py-2 bg-purple-700 text-white rounded">
-                BUY TICKETS
+          {/* Band Members */}
+          <div className={style.bandList}>
+            {show.bandsplaying.map((band, index) => (
+              <div key={index} className={style.bandItem}>
+                <h3 className={style.bandName}>{band}</h3>
+                <p className={style.bandMembers}>Band Members Placeholder</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Actions */}
+          <div className={style.actions}>
+            <a href="https://www.masqueradeatlanta.com/tickets" className={style.buyTicket}>
+              BUY TICKETS
+            </a>
+            {show.fbEventLink && (
+              <a href={show.fbEventLink} className={style.fbEvent}>
+                FB EVENT
               </a>
-              {show.fbEventLink && (
-                <a href={show.fbEventLink} className="px-6 py-2 bg-blue-600 text-white rounded">
-                  FB EVENT
-                </a>
-              )}
-              <div className="flex gap-4">
-                <button className="px-6 py-2 bg-blue-600 text-white rounded">
-                  Share on Facebook
-                </button>
-                <button className="px-6 py-2 bg-blue-400 text-white rounded">
-                  Share on Twitter
-                </button>
-              </div>
-            </div>
+            )}
           </div>
 
-          <div className="my-6">
-            <a href="/events" className="text-blue-500 hover:text-blue-700">
-              Back to Events
-            </a>
+          {/* Social Media Share Buttons */}
+          <div className={style.actions}>
+            <button>Share on Facebook</button>
+            <button>Share on Twitter</button>
+          </div>
+
+          {/* Back Link */}
+          <div className={style.backLink}>
+            <a href="/event/EventList">Back to Events</a>
           </div>
         </>
       )}

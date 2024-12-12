@@ -1,0 +1,77 @@
+/* Custom Dashboard Styling */
+
+/* Container for the whole dashboard */
+.dashboard-container {
+    background-color: #f5f5f5;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Section container for better organization */
+  .section-container {
+    background-color: #ffffff;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Section title styling */
+  .section-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  /* Styling for the user list */
+  .user-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .user-item {
+    padding: 0.5rem 1rem;
+    background-color: #f9fafb;
+    margin-bottom: 0.5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  
+  .user-item:hover {
+    background-color: #e2e8f0;
+  }
+  
+  /* Styling for the shows list */
+  .show-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .show-item {
+    padding: 0.5rem 1rem;
+    background-color: #f9fafb;
+    margin-bottom: 0.5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  
+  .show-item:hover {
+    background-color: #e2e8f0;
+  }
+  
+  /* Error message styling */
+  .text-red-500 {
+    color: #ef4444;
+  }
+  
+  /* Tailwind spacing adjustments for header */
+  h1 {
+    margin-bottom: 1.5rem;
+  }
+  
+  h2 {
+    margin-bottom: 1rem;
+  }
+  
