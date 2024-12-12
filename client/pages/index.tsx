@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import Hero from "../components/Hero";
-import EventList from '../components/EventList';
+import EventList from "../components/EventList";
 import Footer from "../components/Footer";
 import styles from "../styles/Index.module.css";
 import Image from "next/image";
 
+// Adjusted Show type based on the fetched data
 interface Show {
   id: number;
-  bandsplaying: string;
+  bandsplaying: string[];
   showdescription: string;
   showdate: string;
 }
@@ -36,20 +37,18 @@ const Index = () => {
   };
 
   useEffect(() => {
-    // Get the token dynamically (e.g., from localStorage or global state)
-    const token = localStorage.getItem("token"); // Assuming token is stored in localStorage
+    const token = localStorage.getItem("token");
     if (token) {
       fetchUpcomingShows(token);
     } else {
       setError("No authentication token found.");
     }
-  }, []); // Empty dependency array ensures this runs only once when the component mounts
+  }, []);
 
   return (
     <div className={styles.pageContainer}>
       <Hero className={styles.heroSection} />
 
-      {/* Tour Posters Section */}
       <section className={styles.tourPosters}>
         <h2>Upcoming Tours</h2>
         <div className={styles.posterGallery}>
@@ -79,13 +78,13 @@ const Index = () => {
           </div>
         </div>
       </section>
-      
+
+      {/* Pass the shows and error to EventList */}
       <section>
-        {/* Optionally pass the fetched shows to the EventList component */}
-        <EventList shows={shows} />
+        <EventList shows={shows} error={error} />
       </section>
 
-      {error && <p className={styles.error}>{error}</p>} {/* Display error message */}
+      {error && <p className={styles.error}>{error}</p>}
 
       <Footer />
     </div>
