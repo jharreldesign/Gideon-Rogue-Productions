@@ -69,13 +69,13 @@ const Header: React.FC = () => {
           <li>
             <Link href="/venue/VenueList">Venues</Link>
           </li>
-
+          <li>
+              <Link href="/dashboard">Dashboard</Link>
+            </li>
           {/* Conditional rendering for Admin users */}
           {user?.role === "admin" && (
             <>
-            <li>
-              <Link href="/dashboard">Dashboard</Link>
-            </li>
+
             <li className={styles.dropdown}>
               <button onClick={toggleDropdown} className={styles.dropdownButton}>
                 Admin Options

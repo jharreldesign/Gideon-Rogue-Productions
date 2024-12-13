@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
+import styles from '../../styles/ShowCreate.module.css'; // Import CSS module
 
 interface FormData {
   showdate: string;
@@ -120,14 +121,13 @@ const ShowCreate: React.FC = () => {
       setErrorMessage("Failed to create show. Please try again later.");
     }
   };
-  
 
   return (
-    <div>
-      <h2>Create a New Show</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="showdate">Show Date</label>
+    <div className={styles.container}>
+      <h2 className={styles.heading}>Create a New Show</h2>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div className={styles.inputGroup}>
+          <label htmlFor="showdate" className={styles.label}>Show Date</label>
           <input
             type="date"
             id="showdate"
@@ -135,22 +135,24 @@ const ShowCreate: React.FC = () => {
             value={formData.showdate}
             onChange={handleChange}
             required
+            className={styles.inputElement}
           />
         </div>
 
-        <div>
-          <label htmlFor="showdescription">Description</label>
+        <div className={styles.inputGroup}>
+          <label htmlFor="showdescription" className={styles.label}>Description</label>
           <textarea
             id="showdescription"
             name="showdescription"
             value={formData.showdescription}
             onChange={handleChange}
             required
+            className={styles.textareaElement}
           />
         </div>
 
-        <div>
-          <label htmlFor="showtime">Show Time</label>
+        <div className={styles.inputGroup}>
+          <label htmlFor="showtime" className={styles.label}>Show Time</label>
           <input
             type="time"
             id="showtime"
@@ -158,17 +160,19 @@ const ShowCreate: React.FC = () => {
             value={formData.showtime}
             onChange={handleChange}
             required
+            className={styles.inputElement}
           />
         </div>
 
-        <div>
-          <label htmlFor="location">Location</label>
+        <div className={styles.inputGroup}>
+          <label htmlFor="location" className={styles.label}>Location</label>
           <select
             id="location"
             name="location"
             value={formData.location}
             onChange={handleChange}
             required
+            className={styles.selectElement}
           >
             <option value="">Select Venue</option>
             {venues.map((venue) => (
@@ -179,8 +183,8 @@ const ShowCreate: React.FC = () => {
           </select>
         </div>
 
-        <div>
-          <label htmlFor="bandsplaying">Bands Playing</label>
+        <div className={styles.inputGroup}>
+          <label htmlFor="bandsplaying" className={styles.label}>Bands Playing</label>
           <select
             id="bandsplaying"
             name="bandsplaying"
@@ -188,6 +192,7 @@ const ShowCreate: React.FC = () => {
             onChange={handleChange}
             multiple
             required
+            className={styles.selectElement}
           >
             {bands.map((band) => (
               <option key={band.id} value={band.bandname}>
@@ -197,8 +202,8 @@ const ShowCreate: React.FC = () => {
           </select>
         </div>
 
-        <div>
-          <label htmlFor="ticketprice">Ticket Price</label>
+        <div className={styles.inputGroup}>
+          <label htmlFor="ticketprice" className={styles.label}>Ticket Price</label>
           <input
             type="number"
             id="ticketprice"
@@ -206,13 +211,14 @@ const ShowCreate: React.FC = () => {
             value={formData.ticketprice}
             onChange={handleChange}
             required
+            className={styles.inputElement}
           />
         </div>
 
-        {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+        {errorMessage && <p className={styles.error}>{errorMessage}</p>}
 
-        <div>
-          <button type="submit">Create Show</button>
+        <div className={styles.submitButtonContainer}>
+          <button type="submit" className={styles.submitButton}>Create Show</button>
         </div>
       </form>
     </div>

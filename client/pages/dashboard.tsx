@@ -10,14 +10,14 @@ interface Show {
 interface User {
   id: number;
   username: string;
-  is_superuser: boolean;
+  role: string;
 }
 
 const Dashboard: React.FC = () => {
   const [username, setUsername] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [users, setUsers] = useState<User[]>([]);
-  const [isSuperuser, setIsSuperuser] = useState<boolean>(false);
+  const [userRole, setUserRole] = useState<string>("");
   const [shows, setShows] = useState<Show[]>([]);
 
   useEffect(() => {
@@ -27,32 +27,33 @@ const Dashboard: React.FC = () => {
       return;
     }
 
+    // Fetch user info
     fetch("http://127.0.0.1:5000/auth/me", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to authenticate user.");
+        }
+        return response.json();
+      })
       .then((data) => {
         if (data.error) {
           setError(data.error);
         } else {
           setUsername(data.username);
-          const isSuperuserFlag =
-            data.is_superuser === "true" ? true : data.is_superuser;
-          setIsSuperuser(isSuperuserFlag);
+          setUserRole(data.role);
 
-          if (isSuperuserFlag) {
-            fetchUsers(token);
+          if (data.role === "admin") {
+            fetchUsers(token); // Fetch users if admin
           }
-
-          fetchUpcomingShows(token);
+          fetchUpcomingShows(token); // Fetch upcoming shows for all users
         }
       })
-      .catch((err: Error) =>
-        setError(`Error fetching data from the backend: ${err.message}`)
-      );
+      .catch((err: Error) => setError(`Error fetching user data: ${err.message}`));
   }, []);
 
   const fetchUpcomingShows = (token: string) => {
@@ -62,12 +63,17 @@ const Dashboard: React.FC = () => {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch shows.");
+        }
+        return response.json();
+      })
       .then((data) => {
         if (data.error) {
           setError(data.error);
         } else {
-          setShows(data.shows);
+          setShows(data.shows || []);
         }
       })
       .catch((err: Error) => setError(`Error fetching shows: ${err.message}`));
@@ -80,12 +86,17 @@ const Dashboard: React.FC = () => {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch users.");
+        }
+        return response.json();
+      })
       .then((data) => {
         if (data.error) {
           setError(data.error);
         } else {
-          setUsers(data);
+          setUsers(data || []);
         }
       })
       .catch((err: Error) => setError(`Error fetching users: ${err.message}`));
@@ -97,14 +108,14 @@ const Dashboard: React.FC = () => {
       {error && <p className="text-red-500">{error}</p>}
       {username && <p className="text-lg">Welcome, {username}!</p>}
 
-      {isSuperuser && (
+      {userRole === "admin" && (
         <div className="section-container">
           <h2 className="section-title">Staff Members</h2>
           {users.length > 0 ? (
             <ul className="user-list">
               {users.map((user) => (
                 <li key={user.id} className="user-item">
-                  {user.username}
+                  {user.username} - Role: {user.role}
                 </li>
               ))}
             </ul>

@@ -7,12 +7,11 @@ interface Show {
   id: number;
   showdate: string;
   showdescription: string;
-  showtime: string;
+  showtime: string; // Assuming showtime is in 24-hour format, like '14:30'
   location: string;
-  bandsplaying: string[];
-  bandPhoto: string;
-  ticketPrice: string;
-  fbEventLink: string;
+  bandsplaying: string[]; 
+  bandPhoto: string; 
+  ticketprice: number;
 }
 
 const ShowDetail: React.FC = () => {
@@ -39,6 +38,16 @@ const ShowDetail: React.FC = () => {
     } catch {
       setError('Error fetching show details');
     }
+  };
+
+  // Function to format the time to a 12-hour format with AM/PM
+  const formatTime = (time: string) => {
+    const [hours, minutes] = time.split(':').map(Number); // Assuming time format is "HH:MM"
+    const date = new Date();
+    date.setHours(hours, minutes);
+
+    // Use toLocaleString for 12-hour format with AM/PM
+    return date.toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
   };
 
   return (
@@ -68,7 +77,7 @@ const ShowDetail: React.FC = () => {
             </div>
             <div>
               <strong>Time:</strong>
-              <p>{show.showtime}</p>
+              <p>{formatTime(show.showtime)}</p> {/* Format the showtime */}
             </div>
             <div>
               <strong>Location:</strong>
@@ -76,7 +85,7 @@ const ShowDetail: React.FC = () => {
             </div>
             <div>
               <strong>Price:</strong>
-              <p>{show.ticketPrice}</p>
+              <p>{show.ticketprice}</p>
             </div>
           </div>
 
@@ -99,17 +108,6 @@ const ShowDetail: React.FC = () => {
             <a href="https://www.masqueradeatlanta.com/tickets" className={style.buyTicket}>
               BUY TICKETS
             </a>
-            {show.fbEventLink && (
-              <a href={show.fbEventLink} className={style.fbEvent}>
-                FB EVENT
-              </a>
-            )}
-          </div>
-
-          {/* Social Media Share Buttons */}
-          <div className={style.actions}>
-            <button>Share on Facebook</button>
-            <button>Share on Twitter</button>
           </div>
 
           {/* Back Link */}
