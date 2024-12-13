@@ -75,3 +75,13 @@
     margin-bottom: 1rem;
   }
   
+  /* In your Dashboard.css */
+.posterLink {
+  /* Your styles for the poster link, e.g., padding, margin, or hover effects */
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.posterLink:hover {
+  transform: scale(1.05);
+}

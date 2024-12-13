@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import style from '../../styles/BandDetails.module.css';
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import style from "../../styles/BandDetails.module.css";
 
 interface Band {
   id: number;
@@ -35,49 +35,45 @@ const BandDetail: React.FC = () => {
         setBand(data.band);
       }
     } catch {
-      setError('Error fetching band details');
+      setError("Error fetching band details");
     }
   };
 
-  // Edit button click handler
   const handleEdit = () => {
     if (band) {
       router.push(`/bands/edit/${band.id}`);
     }
   };
 
-  // Delete button click handler
   const handleDelete = async () => {
     if (!band) return;
-  
+
     try {
       const response = await fetch(`http://127.0.0.1:5000/bands/${band.id}`, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`, // Replace with your token storage method
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-  
+
       if (response.ok) {
-        alert('Band deleted successfully!');
-        router.push('/bands/BandList');
+        alert("Band deleted successfully!");
+        router.push("/bands/BandList");
       } else {
         const errorData = await response.json();
-        setError(errorData.error || 'Error deleting the band');
-        console.error('Error deleting band:', errorData);
+        setError(errorData.error || "Error deleting the band");
+        console.error("Error deleting band:", errorData);
       }
     } catch (err) {
-      console.error('Unexpected error:', err);
-      setError('An unexpected error occurred. Please try again.');
+      console.error("Unexpected error:", err);
+      setError("An unexpected error occurred. Please try again.");
     }
   };
-  
-  
 
   return (
     <div className="container mx-auto p-6">
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
 
       {band && (
         <>
@@ -86,8 +82,6 @@ const BandDetail: React.FC = () => {
             className={style.heroImage}
             style={{
               backgroundImage: `url(${band.bandphoto})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
             }}
           >
             <div className={style.heroText}>
@@ -96,52 +90,46 @@ const BandDetail: React.FC = () => {
           </div>
 
           {/* Band Info Section */}
-          <div className={style.bandInfo}>
-            <div className="mb-4">
-              <strong>Hometown:</strong>
+          <div className={`${style.bandInfo} max-w-3xl mx-auto`}>
+            <div className="mb-6">
+              <strong className="text-xl">Hometown:</strong>
               <p>{band.hometown}</p>
             </div>
-            <div className="mb-4">
-              <strong>Genre:</strong>
+            <div className="mb-6">
+              <strong className="text-xl">Genre:</strong>
               <p>{band.genre}</p>
             </div>
-            <div className="mb-4">
-              <strong>Year Started:</strong>
+            <div className="mb-6">
+              <strong className="text-xl">Year Started:</strong>
               <p>{band.yearstarted}</p>
             </div>
-            <div className="mb-4">
-              <strong>Members:</strong>
+            <div className="mb-6">
+              <strong className="text-xl">Members:</strong>
               <ul className={style.bandList}>
                 {band.membernames.map((member, index) => (
                   <li key={index}>{member}</li>
                 ))}
               </ul>
             </div>
-            <div className="mb-4">
-              <strong>Description:</strong>
+            <div className="mb-6">
+              <strong className="text-xl">Description:</strong>
               <p>{band.banddescription}</p>
             </div>
           </div>
 
-          {/* Edit and Delete Buttons */}
-          <div className="mt-6 flex gap-4">
-            <button
-              onClick={handleEdit}
-              className={`${style.button} px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-700`}
-            >
+          {/* Edit, Delete, and Back Buttons */}
+          <div className="mt-8 flex gap-6 justify-end">
+            <button onClick={handleEdit} className={style["btn-primary"]}>
               Edit Band
             </button>
-            <button
-              onClick={handleDelete}
-              className={`${style.button} px-6 py-2 bg-red-500 text-white rounded hover:bg-red-700`}
-            >
+            <button onClick={handleDelete} className={style["btn-danger"]}>
               Delete Band
             </button>
-          </div>
-
-          {/* Back Link */}
-          <div className={style.bandLink}>
-            <a href="/bands/BandList">Back to Bands</a>
+            <button>
+              <a href="/bands/BandList" className={style["btn-primary"]}>
+                Back to Bands
+              </a>
+            </button>
           </div>
         </>
       )}

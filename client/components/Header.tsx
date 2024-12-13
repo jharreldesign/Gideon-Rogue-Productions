@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useUser } from "../context/UserContex"; 
-import styles from "../styles/Header.module.css"; 
+import { useUser } from "../context/UserContex";
+import styles from "../styles/Header.module.css";
 import Link from "next/link";
 
 const Header: React.FC = () => {
   const { user, setUser, loading, fetchUser } = useUser();
   const router = useRouter();
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (!user && !loading) {
-      fetchUser(); 
+      fetchUser();
     }
   }, [user, loading, fetchUser]);
 
@@ -30,9 +30,9 @@ const Header: React.FC = () => {
   if (loading) return <p>Loading...</p>;
 
   const handleLogout = () => {
-    setUser(null); 
-    localStorage.removeItem("token"); 
-    router.push("/login"); 
+    setUser(null);
+    localStorage.removeItem("token");
+    router.push("/");
   };
 
   const toggleDropdown = () => {
@@ -71,10 +71,20 @@ const Header: React.FC = () => {
             </li>
           )}
 
+          {/* Show Bands link only if user is logged in as an admin */}
+          {user?.role === "admin" && (
+            <li>
+              <Link href="/bands/BandList">Bands</Link>
+            </li>
+          )}
+
           {/* Conditional rendering for Admin users */}
           {user?.role === "admin" && (
             <li className={styles.dropdown}>
-              <button onClick={toggleDropdown} className={styles.dropdownButton}>
+              <button
+                onClick={toggleDropdown}
+                className={styles.dropdownButton}
+              >
                 Admin Options
               </button>
               {isDropdownOpen && (

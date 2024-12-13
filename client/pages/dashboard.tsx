@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
 import "../styles/Dashboard.css";
+import EventList from '../pages/event/EventList';
 
 interface Show {
   id: number;
+  bandsplaying: string[];
   showdescription: string;
   showdate: string;
+  showtime: string;
+  location: string;
+  ticketprice: number;
+  tourposter: string;
+  tourUrl: string;
 }
 
 interface User {
@@ -53,7 +60,9 @@ const Dashboard: React.FC = () => {
           fetchUpcomingShows(token); // Fetch upcoming shows for all users
         }
       })
-      .catch((err: Error) => setError(`Error fetching user data: ${err.message}`));
+      .catch((err: Error) =>
+        setError(`Error fetching user data: ${err.message}`)
+      );
   }, []);
 
   const fetchUpcomingShows = (token: string) => {
@@ -125,21 +134,8 @@ const Dashboard: React.FC = () => {
         </div>
       )}
 
-      <div className="section-container">
-        <h2 className="section-title">Upcoming Shows</h2>
-        {shows.length > 0 ? (
-          <ul className="show-list">
-            {shows.map((show) => (
-              <li key={show.id} className="show-item">
-                {show.showdescription} -{" "}
-                {new Date(show.showdate).toLocaleDateString()}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No upcoming shows found.</p>
-        )}
-      </div>
+      {/* Pass the fetched shows to EventList */}
+      <EventList shows={shows} error={error} />
     </div>
   );
 };
