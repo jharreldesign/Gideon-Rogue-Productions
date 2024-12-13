@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
-import styles from '../../styles/ShowCreate.module.css'; // Import CSS module
+import styles from '../../styles/ShowCreate.module.css'; 
+import Image from 'next/image';
 
 interface FormData {
   showdate: string;
@@ -10,6 +11,7 @@ interface FormData {
   location: string;
   bandsplaying: string[];
   ticketprice: string;
+  tourposter: string; 
 }
 
 interface Venue {
@@ -28,6 +30,7 @@ const ShowCreate: React.FC = () => {
     location: "",
     bandsplaying: [],
     ticketprice: "",
+    tourposter: "", // Initially empty
   });
 
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -83,27 +86,27 @@ const ShowCreate: React.FC = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-  
+
       if (!token) {
         setErrorMessage("Authentication token is missing.");
         return;
       }
-  
+
       const date = formData.showdate;
       const time = formData.showtime;
-  
+
       const showtime = `${date} ${time}:00`;
-  
+
       const updatedFormData = { ...formData, showtime };
-  
+
       await axios.post("http://127.0.0.1:5000/shows", updatedFormData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       router.push("/event/EventList");
-  
+
       setFormData({
         showdate: "",
         showdescription: "",
@@ -111,6 +114,7 @@ const ShowCreate: React.FC = () => {
         location: "",
         bandsplaying: [],
         ticketprice: "",
+        tourposter: "",
       });
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -213,6 +217,28 @@ const ShowCreate: React.FC = () => {
             required
             className={styles.inputElement}
           />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label htmlFor="tourposter" className={styles.label}>Tour Poster URL</label>
+          <input
+            type="url"
+            id="tourposter"
+            name="tourposter"
+            value={formData.tourposter}
+            onChange={handleChange}
+            placeholder="Enter the URL for the tour poster"
+            className={styles.inputElement}
+          />
+          {formData.tourposter && (
+            <Image
+              src={formData.tourposter}
+              alt="Tour Poster Preview"
+              width={500}  
+              height={300} 
+              className={styles.posterPreview}
+            />
+          )}
         </div>
 
         {errorMessage && <p className={styles.error}>{errorMessage}</p>}

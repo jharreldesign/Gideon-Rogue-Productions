@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-
 import style from '../../styles/EventDetails.module.css';
+import Modal from '../../components/Modal'; // Import the Modal component
+import Image from 'next/image'; // Import the Image component from Next.js
 
 interface Show {
   id: number;
@@ -9,14 +10,16 @@ interface Show {
   showdescription: string;
   showtime: string; // Assuming showtime is in 24-hour format, like '14:30'
   location: string;
-  bandsplaying: string[]; 
-  bandPhoto: string; 
+  bandsplaying: string[];
+  bandPhoto: string;
   ticketprice: number;
+  tourposter: string;
 }
 
 const ShowDetail: React.FC = () => {
   const [show, setShow] = useState<Show | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const router = useRouter();
   const { id } = router.query;
 
@@ -42,12 +45,20 @@ const ShowDetail: React.FC = () => {
 
   // Function to format the time to a 12-hour format with AM/PM
   const formatTime = (time: string) => {
-    const [hours, minutes] = time.split(':').map(Number); // Assuming time format is "HH:MM"
+    const [hours, minutes] = time.split(':').map(Number); 
     const date = new Date();
     date.setHours(hours, minutes);
 
     // Use toLocaleString for 12-hour format with AM/PM
     return date.toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true); 
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false); 
   };
 
   return (
@@ -60,7 +71,7 @@ const ShowDetail: React.FC = () => {
           <div
             className={style.heroImage}
             style={{
-              backgroundImage: `url(${show.bandPhoto})`,
+              backgroundImage: `url(${show.tourposter})`, 
             }}
           >
             <div className={style.heroText}>
@@ -71,21 +82,31 @@ const ShowDetail: React.FC = () => {
 
           {/* Show Info */}
           <div className={style.eventInfo}>
-            <div>
+            <div className={style.bandInfo}>
               <strong>Date:</strong>
               <p>{new Date(show.showdate).toLocaleDateString()}</p>
-            </div>
-            <div>
+
               <strong>Time:</strong>
-              <p>{formatTime(show.showtime)}</p> {/* Format the showtime */}
-            </div>
-            <div>
+              <p>{formatTime(show.showtime)}</p> 
+
               <strong>Location:</strong>
               <p>{show.location}</p>
-            </div>
-            <div>
+
               <strong>Price:</strong>
               <p>{show.ticketprice}</p>
+            </div>
+
+            {/* Tour Poster Image */}
+            <div className={style.tourPosterContainer} onClick={openModal}>
+              <Image
+                src={show.tourposter}
+                alt="Tour Poster"
+                layout="responsive" 
+                width={1200} 
+                height={800} 
+                objectFit="contain" 
+                className={style.tourPoster} 
+              />
             </div>
           </div>
 
@@ -105,7 +126,7 @@ const ShowDetail: React.FC = () => {
 
           {/* Actions */}
           <div className={style.actions}>
-            <a href="https://www.masqueradeatlanta.com/tickets" className={style.buyTicket}>
+            <a href="#" className={style.buyTicket}>
               BUY TICKETS
             </a>
           </div>
@@ -114,6 +135,9 @@ const ShowDetail: React.FC = () => {
           <div className={style.backLink}>
             <a href="/event/EventList">Back to Events</a>
           </div>
+
+          {/* Modal */}
+          <Modal isOpen={isModalOpen} onClose={closeModal} imageSrc={show.tourposter} />
         </>
       )}
     </div>

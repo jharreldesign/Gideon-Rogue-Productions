@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
         hostname: 'www.prestoimages.net',
         pathname: '/store30/rd227/**',
       },
+      {
+        protocol: 'https',
+        hostname: '**', 
+        pathname: '/**', 
+      },
     ],
   },
 };

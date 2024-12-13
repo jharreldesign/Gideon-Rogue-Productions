@@ -6,7 +6,7 @@
 }
 
 .heroImage {
-  height: 300px;
+  height: 200px;
   background-size: cover;
   background-position: center;
   display: flex;
@@ -46,8 +46,8 @@
 
 .eventInfo {
   display: flex;
-  flex-wrap: wrap;
   gap: 20px;
+  flex-wrap: wrap;
   margin-bottom: 20px;
   border: 1px solid #ddd;
   padding: 20px;
@@ -55,18 +55,36 @@
   background-color: #f9f9f9;
 }
 
-.eventInfo div {
+.bandInfo {
   flex: 1;
+  font-size: 1.2rem; 
+  line-height: 1.5; 
 }
 
-.eventInfo strong {
+.bandInfo strong {
   display: block;
-  font-size: 1rem;
-  margin-bottom: 5px;
+  font-size: 1.2rem; 
+  margin-bottom: 10px; 
 }
 
-.eventInfo p {
+.bandInfo p {
   margin: 0;
+  font-size: 1.4rem; 
+}
+
+.tourPosterContainer {
+  flex: 0 0 300px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px; 
+}
+
+.tourPoster {
+  width: 100%;
+  max-width: 300px; 
+  height: auto;
+  object-fit: contain;
 }
 
 .bandList {
@@ -147,4 +165,32 @@
 
 .backLink a:hover {
   text-decoration: underline;
+}
+
+/* Add modal styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  max-width: 80%;
+  max-height: 80%;
+  overflow: auto;
+}
+
+.modal img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }
