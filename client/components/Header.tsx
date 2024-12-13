@@ -89,7 +89,7 @@ const Header: React.FC = () => {
                     <Link href="/bands/BandList">Bands</Link>
                   </li>
                   <li>
-                    <Link href="/signup/index.tsx">Create A Staff Member</Link>
+                    <Link href="/signup">Create A Staff Member</Link>
                   </li>
                 </ul>
               )}

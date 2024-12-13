@@ -9,7 +9,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [streetAddress, setStreetAddress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [staffPosition, setStaffPosition] = useState("");
+  const [role, setRole] = useState("staff");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const router = useRouter();
@@ -31,7 +31,7 @@ const Signup = () => {
           email,
           street_address: streetAddress,
           phone_number: phoneNumber,
-          staff_position: staffPosition,
+          role,
         }),
       });
 
@@ -109,13 +109,15 @@ const Signup = () => {
           />
         </div>
         <div style={{ marginBottom: "1em" }}>
-          <label>Staff Position:</label>
-          <input
-            type="text"
-            value={staffPosition}
-            onChange={(e) => setStaffPosition(e.target.value)}
+          <label>Role:</label>
+          <select
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
             style={{ width: "100%", padding: "0.5em", margin: "0.5em 0" }}
-          />
+          >
+            <option value="staff">Staff</option>
+            <option value="admin">Admin</option>
+          </select>
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
         {success && <p style={{ color: "green" }}>{success}</p>}

@@ -8,7 +8,8 @@ const CreateBand: React.FC = () => {
     genre: "",
     yearstarted: "",
     membernames: "",
-    bandphoto: "",  // Updated from 'tour_image' to 'bandphoto'
+    bandphoto: "", // Updated from 'tour_image' to 'bandphoto'
+    banddescription: "", // Added 'banddescription' field
   });
 
   const handleChange = (
@@ -23,19 +24,21 @@ const CreateBand: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const token = localStorage.getItem("token"); 
-  
+    const token = localStorage.getItem("token");
+
     try {
       await axios.post(
         "http://127.0.0.1:5000/bands",
         {
           ...formData,
           yearstarted: parseInt(formData.yearstarted, 10),
-          membernames: formData.membernames.split(",").map((name) => name.trim()),
+          membernames: formData.membernames
+            .split(",")
+            .map((name) => name.trim()),
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, 
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -46,19 +49,27 @@ const CreateBand: React.FC = () => {
         genre: "",
         yearstarted: "",
         membernames: "",
-        bandphoto: "",  
+        bandphoto: "",
+        banddescription: "", // Clear the banddescription field
       });
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        console.error("Error adding band:", error.response?.data || error.message);
-        alert(`Failed to add band: ${error.response?.data?.message || "Please try again."}`);
+        console.error(
+          "Error adding band:",
+          error.response?.data || error.message
+        );
+        alert(
+          `Failed to add band: ${
+            error.response?.data?.message || "Please try again."
+          }`
+        );
       } else {
         console.error("Unexpected error:", error);
         alert("An unexpected error occurred. Please try again.");
       }
     }
   };
-  
+
   return (
     <form onSubmit={handleSubmit}>
       <div>
@@ -116,12 +127,22 @@ const CreateBand: React.FC = () => {
         />
       </div>
       <div>
-        <label htmlFor="bandphoto">Band Photo URL:</label> 
+        <label htmlFor="banddescription">Band Description:</label>
+        <textarea
+          id="banddescription"
+          name="banddescription"
+          value={formData.banddescription}
+          onChange={handleChange}
+          rows={4}
+        />
+      </div>
+      <div>
+        <label htmlFor="bandphoto">Band Photo URL:</label>
         <input
           type="url"
-          id="bandphoto"  
-          name="bandphoto"  
-          value={formData.bandphoto}  
+          id="bandphoto"
+          name="bandphoto"
+          value={formData.bandphoto}
           onChange={handleChange}
           required
         />
