@@ -1,84 +1,138 @@
-/* General styles for the container */
 .container {
-    margin: 0 auto;
-    padding: 1.5rem;
-    max-width: 1200px;
-    background-color: #f9f9f9;
-  }
-  
-  /* Title styling */
-  .title {
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 20px;
-  }
-  
-  /* Error message styling */
-  .error {
-    color: #f87171; /* Tailwind red-400 */
-    text-align: center;
-    margin-bottom: 1rem;
-  }
-  
-  /* Show list styling */
-  .showList {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  /* Show item styling */
+  margin: 0 auto;
+  padding: 2rem;
+  max-width: 1200px;
+  background-color: #fafafa;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.error {
+  color: #f87171;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.125rem;
+}
+
+.showList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.showItem {
+  display: flex;
+  flex-direction: row; 
+  background-color: #ffffff;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.showItem:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.showImageContainer {
+  width: 150px; 
+  height: auto;
+  margin-right: 1.5rem; 
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.showImage {
+  width: 100%; 
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.showInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex-grow: 1; 
+}
+
+.showInfo h2 {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.showInfo h4 {
+  font-size: 1.125rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.showInfo p {
+  font-size: 1rem;
+  color: #777;
+}
+
+.noShows {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #9ca3af;
+}
+
+.viewDetailsButton {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  margin-top: 1rem;
+  background-color: #007BFF;
+  color: white;
+  font-weight: bold;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.viewDetailsButton:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
   .showItem {
-    display: flex;
     flex-direction: column;
-    background-color: #f3f4f6; /* Tailwind gray-100 */
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 0.375rem; /* Tailwind rounded-lg */
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Tailwind shadow-sm */
   }
-  
-  /* Styling for the band name and show description */
-  .showItem h2 {
+
+  .showImageContainer {
+    margin-bottom: 1rem;
+    max-width: 100%;
+  }
+
+  .showInfo h2 {
     font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
   }
-  
-  /* Styling for the show description */
-  .showItem h4 {
-    font-size: 1.125rem;
-    margin-bottom: 1rem;
+
+  .showInfo h4 {
+    font-size: 1rem;
   }
-  
-  /* Styling for the show date */
-  .showItem .show-date {
-    font-size: 0.875rem; /* Tailwind text-sm */
-    color: #6b7280; /* Tailwind gray-500 */
+
+  .showInfo p {
+    font-size: 0.9rem;
   }
-  
-  /* No shows message */
-  .noShows {
-    text-align: center;
-    font-size: 1.2rem;
-    color: #9ca3af; /* Tailwind gray-400 */
-  }
-  
-  /* Button style for the "View Show" link */
+
   .viewDetailsButton {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    margin-top: 10px;
-    background-color: #4CAF50; /* Green background */
-    color: white;
-    font-weight: bold;
-    border-radius: 0.375rem;
-    text-decoration: none;
-    text-align: center;
-    transition: background-color 0.3s ease;
+    width: 100%;
   }
-  
-  .viewDetailsButton:hover {
-    background-color: #45a049; /* Slightly darker green on hover */
-  }
-  
+}

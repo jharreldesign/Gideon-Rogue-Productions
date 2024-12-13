@@ -47,3 +47,17 @@
   object-fit: cover;
   border-radius: 10px;
 }
+
+.posterLink {
+  display: inline-block;
+  text-decoration: none; 
+}
+
+.poster img {
+  border: 1px solid #ccc; 
+  transition: transform 0.3s ease-in-out;
+}
+
+.poster img:hover {
+  transform: scale(1.05); 
+}

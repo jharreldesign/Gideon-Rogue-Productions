@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import style from '../../styles/EventDetails.module.css';
-import Modal from '../../components/Modal'; // Import the Modal component
-import Image from 'next/image'; // Import the Image component from Next.js
+import Modal from '../../components/Modal'; 
+import Image from 'next/image'; 
 
 interface Show {
   id: number;
   showdate: string;
   showdescription: string;
-  showtime: string; // Assuming showtime is in 24-hour format, like '14:30'
+  showtime: string; 
   location: string;
   bandsplaying: string[];
   bandPhoto: string;
@@ -19,7 +19,7 @@ interface Show {
 const ShowDetail: React.FC = () => {
   const [show, setShow] = useState<Show | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false); 
   const router = useRouter();
   const { id } = router.query;
 
@@ -83,17 +83,16 @@ const ShowDetail: React.FC = () => {
           {/* Show Info */}
           <div className={style.eventInfo}>
             <div className={style.bandInfo}>
-              <strong>Date:</strong>
-              <p>{new Date(show.showdate).toLocaleDateString()}</p>
-
-              <strong>Time:</strong>
-              <p>{formatTime(show.showtime)}</p> 
-
-              <strong>Location:</strong>
-              <p>{show.location}</p>
-
-              <strong>Price:</strong>
-              <p>{show.ticketprice}</p>
+              <br />
+              <br />
+              <br />
+              <p>Date: {new Date(show.showdate).toLocaleDateString()}</p>
+              <br />
+              <p>Time: {formatTime(show.showtime)}</p> 
+              <br />
+              <p>Location: {show.location}</p>
+              <br />
+              <p>Price: ${show.ticketprice}</p>
             </div>
 
             {/* Tour Poster Image */}
@@ -106,7 +105,7 @@ const ShowDetail: React.FC = () => {
                 height={800} 
                 objectFit="contain" 
                 className={style.tourPoster} 
-              />
+                />
             </div>
           </div>
 
@@ -118,8 +117,8 @@ const ShowDetail: React.FC = () => {
           <div className={style.bandList}>
             {show.bandsplaying.map((band, index) => (
               <div key={index} className={style.bandItem}>
-                <h3 className={style.bandName}>{band}</h3>
-                <p className={style.bandMembers}>Band Members Placeholder</p>
+                <h3 className={style.bandname}>{band}</h3>
+                <p className={style.bandmembers}>Band Members Placeholder</p>
               </div>
             ))}
           </div>
