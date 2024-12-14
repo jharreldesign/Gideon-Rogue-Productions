@@ -15,19 +15,22 @@ interface Show {
 }
 
 interface EventListProps {
-  shows: Show[]; 
-  error: string | null;
+  shows: Show[];  // Shows will be passed in as a prop
+  error: string | null; // Error message from the API or server
 }
 
 const EventList: React.FC<EventListProps> = ({ shows = [], error = null }) => {
   const [localShows, setLocalShows] = useState<Show[]>(shows);
   const [localError, setLocalError] = useState<string | null>(error);
 
+  // Fetch the shows only if the prop 'shows' is empty
   useEffect(() => {
-    if (shows && shows.length === 0) {
+    if (shows.length === 0) {
       fetchShows();
+    } else {
+      setLocalShows(shows);  // Use the passed-in shows if available
     }
-  }, [shows]);
+  }, [shows]); // Only re-run the effect if 'shows' prop changes
 
   const fetchShows = async () => {
     try {
@@ -57,8 +60,9 @@ const EventList: React.FC<EventListProps> = ({ shows = [], error = null }) => {
             {localShows.map((show) => (
               <li key={show.id} className={styles.showItem}>
                 <div className={styles.showImageContainer}>
+                  {/* Check if tourposter exists and provide a fallback */}
                   <Image
-                    src={show.tourposter} 
+                    src={show.tourposter || "/default-poster.jpg"} // Use a default image if no tourposter is available
                     alt={`${show.bandsplaying.join(", ")} Tour Poster`}
                     className={styles.showImage}
                     width={200}

@@ -1,6 +1,6 @@
 # Gideon-Rogue-Productions
 
-![Gideon Rogue Productions logo](public/images/Logo.png)
+![Gideon Rogue Productions logo](client/public/images/Logo.png)
 
 Welcome to **Gideon Rogue Productions** — a premier venue production company managing multiple venues across the city. We specialize in organizing and hosting events, bringing top-tier bands and artists to our stages, and ensuring smooth operations at every event. 
 
