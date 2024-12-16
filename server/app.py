@@ -6,6 +6,7 @@ from shows_blueprint import shows_blueprint
 from venues_blueprint import venues_blueprint
 from bands_blueprint import bands_blueprint
 from flask_cors import CORS
+import os
 
 load_dotenv()
 
@@ -21,4 +22,7 @@ app.register_blueprint(shows_blueprint)
 app.register_blueprint(venues_blueprint)
 app.register_blueprint(bands_blueprint)
 
-app.run()
+if __name__ == "__main__":
+    # Use the PORT environment variable from Render, or default to 5000
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
