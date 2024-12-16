@@ -24,7 +24,7 @@ const Index = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const fetchUpcomingShows = () => {
-    fetch("http://127.0.0.1:5000/shows", {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/shows`, {
       method: "GET",
     })
       .then((response) => response.json())

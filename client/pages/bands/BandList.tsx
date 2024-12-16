@@ -23,7 +23,7 @@ const BandList: React.FC = () => {
       return;
     }
 
-    fetch('http://127.0.0.1:5000/auth/me', {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/me`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -50,7 +50,7 @@ const BandList: React.FC = () => {
   }, []);
 
   const fetchBands = (token: string) => {
-    fetch('http://127.0.0.1:5000/bands', {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/bands`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,

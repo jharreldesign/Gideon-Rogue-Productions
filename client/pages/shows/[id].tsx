@@ -33,7 +33,7 @@ const ShowDetail: React.FC = () => {
 
   const fetchShowDetails = async (showId: string) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/shows/${showId}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${showId}`);
       const data = await response.json();
       if (data.error) {
         setError(data.error);

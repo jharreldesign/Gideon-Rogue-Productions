@@ -46,7 +46,7 @@ const ShowEdit: React.FC = () => {
 
     const fetchShowDetails = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:5000/shows/${id}`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/shows/${id}`);
         setFormData(response.data);
         setIsLoading(false); // Set loading to false once data is fetched
       } catch (error) {
@@ -60,8 +60,8 @@ const ShowEdit: React.FC = () => {
     const fetchVenuesAndBands = async () => {
       try {
         const [venuesResponse, bandsResponse] = await Promise.all([
-          axios.get("http://127.0.0.1:5000/venues"),
-          axios.get("http://127.0.0.1:5000/bands"),
+          axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/venues`),
+          axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/bands`),
         ]);
         setVenues(venuesResponse.data.venues);
         setBands(bandsResponse.data.bands);
@@ -117,7 +117,7 @@ const ShowEdit: React.FC = () => {
   
       const updatedFormData = { ...formData, showtime };
   
-      await axios.put(`http://127.0.0.1:5000/shows/${id}`, updatedFormData, {
+      await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/shows/${id}`, updatedFormData, {
         headers: {
           Authorization: `Bearer ${token}`, // Sending token for authorization
         },

@@ -46,7 +46,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/auth/me", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -72,7 +72,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 
   // Handle user login (set token and fetch user data)
   const login = async (username: string, password: string) => {
-    const response = await fetch("http://127.0.0.1:5000/auth/signin", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/signin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

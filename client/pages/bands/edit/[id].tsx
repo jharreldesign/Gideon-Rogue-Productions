@@ -30,7 +30,7 @@ const EditBand: React.FC = () => {
 
   const fetchBandDetails = async (bandId: string) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/bands/${bandId}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${bandId}`);
       const data = await response.json();
       if (data.error) {
         setError(data.error);
@@ -77,7 +77,7 @@ const EditBand: React.FC = () => {
     if (formData) {
       try {
         await axios.put(
-          `http://127.0.0.1:5000/bands/${formData.id}`,
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/${formData.id}`,
           {
             ...formData,
             yearstarted: parseInt(formData.yearstarted.toString(), 10),

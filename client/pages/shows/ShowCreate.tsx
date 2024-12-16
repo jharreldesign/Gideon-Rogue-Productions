@@ -42,8 +42,8 @@ const ShowCreate: React.FC = () => {
     const fetchVenuesAndBands = async () => {
       try {
         const [venuesResponse, bandsResponse] = await Promise.all([
-          axios.get("http://127.0.0.1:5000/venues"),
-          axios.get("http://127.0.0.1:5000/bands"),
+          axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/venues`),
+          axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/bands`),
         ]);
 
         setVenues(venuesResponse.data.venues);
@@ -99,7 +99,7 @@ const ShowCreate: React.FC = () => {
 
       const updatedFormData = { ...formData, showtime };
 
-      await axios.post("http://127.0.0.1:5000/shows", updatedFormData, {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/shows`, updatedFormData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

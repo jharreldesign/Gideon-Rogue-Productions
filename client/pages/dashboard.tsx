@@ -34,7 +34,7 @@ const Dashboard: React.FC = () => {
       return;
     }
 
-    fetch("http://127.0.0.1:5000/auth/me", {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/me`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -55,7 +55,7 @@ const Dashboard: React.FC = () => {
   }, []);
 
   const fetchUpcomingShows = (token: string) => {
-    fetch("http://127.0.0.1:5000/shows", {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/shows`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -73,7 +73,7 @@ const Dashboard: React.FC = () => {
   };
 
   const fetchUsers = (token: string) => {
-    fetch("http://127.0.0.1:5000/auth/users", {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/users`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

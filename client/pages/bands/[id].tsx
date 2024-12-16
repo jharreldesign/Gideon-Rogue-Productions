@@ -29,7 +29,7 @@ const BandDetail: React.FC = () => {
 
   const fetchBandDetails = async (bandId: string) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/bands/${bandId}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${bandId}`);
       const data = await response.json();
       if (data.error) {
         setError(data.error);
@@ -51,7 +51,7 @@ const BandDetail: React.FC = () => {
     if (!band) return;
 
     try {
-      const response = await fetch(`http://127.0.0.1:5000/bands/${band.id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${band.id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

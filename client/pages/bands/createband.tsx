@@ -28,7 +28,7 @@ const CreateBand: React.FC = () => {
 
     try {
       await axios.post(
-        "http://127.0.0.1:5000/bands",
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/bands`,
         {
           ...formData,
           yearstarted: parseInt(formData.yearstarted, 10),

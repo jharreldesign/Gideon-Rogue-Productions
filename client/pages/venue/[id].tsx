@@ -41,7 +41,7 @@ const VenueDetail: React.FC = () => {
 
   const fetchVenueDetails = async (venueId: string) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/venues/${venueId}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/venues/${venueId}`);
       const data = await response.json();
       if (data.error) {
         setError(data.error);

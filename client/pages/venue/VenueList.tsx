@@ -19,7 +19,7 @@ const VenueList: React.FC = () => {
     
     // Check if the token exists and fetch user info
     if (token) {
-      fetch('http://127.0.0.1:5000/auth/me', {
+      fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/me`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -43,7 +43,7 @@ const VenueList: React.FC = () => {
   }, []);
 
   const fetchVenues = (token: string | null) => {
-    fetch('http://127.0.0.1:5000/venues', {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/venues`, {
       method: 'GET',
       headers: {
         Authorization: token ? `Bearer ${token}` : '',

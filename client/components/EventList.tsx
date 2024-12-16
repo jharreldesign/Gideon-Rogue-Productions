@@ -34,7 +34,7 @@ const EventList: React.FC<EventListProps> = ({ shows = [], error }) => {
 
   const fetchShows = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:5000/shows");
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/shows`);
       const data = await response.json();
       if (data.error) {
         setLocalError(data.error);
@@ -59,7 +59,7 @@ const EventList: React.FC<EventListProps> = ({ shows = [], error }) => {
     }
 
     try {
-      const response = await fetch(`http://127.0.0.1:5000/shows/${showId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/shows/${showId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
