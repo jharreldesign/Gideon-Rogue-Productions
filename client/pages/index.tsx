@@ -64,13 +64,13 @@ const Index = () => {
         <div className="carousel-slides">
           {shows.slice(currentIndex, currentIndex + 3).map((show) => (
             <div key={show.id} className="carousel-slide">
-              <a href={show.tourUrl} target="_blank" rel="noopener noreferrer">
+              <Link href={show.tourUrl} target="_blank" rel="noopener noreferrer">
                 <img
                   src={show.tourposter}
                   alt={`Tour poster for ${show.bandsplaying.join(", ")}`}
                   className="tour-poster"
                 />
-              </a>
+              </Link>
             </div>
           ))}
         </div>

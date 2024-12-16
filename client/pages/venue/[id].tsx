@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';  // Import Image from next/image
-
+import Link from "next/link";
 import style from '../../styles/VenueDetails.module.css';
 
 interface Event {
@@ -110,9 +110,9 @@ const VenueDetail: React.FC = () => {
                       layout="responsive"  // This will make the image responsive
                     />
                   )}
-                  <a href={`/shows/${event.id}`} className={style.eventLink}>
+                  <Link href={`/shows/${event.id}`} className={style.eventLink}>
                     View Details
-                  </a>
+                  </Link>
                 </div>
               ))
             ) : (
@@ -122,7 +122,7 @@ const VenueDetail: React.FC = () => {
 
           {/* Back Link */}
           <div className={style.backLink}>
-            <a href="/venue/VenueList">Back to Venues</a>
+            <Link href="/venue/VenueList">Back to Venues</Link>
           </div>
         </>
       )}

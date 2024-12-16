@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import style from '../../styles/EventDetails.module.css';
 import Modal from '../../components/Modal'; 
-import Image from 'next/image'; 
+import Image from 'next/image';
+import Link from "next/link";
+
 
 interface Show {
   id: number;
@@ -125,14 +127,14 @@ const ShowDetail: React.FC = () => {
 
           {/* Actions */}
           <div className={style.actions}>
-            <a href="#" className={style.buyTicket}>
+            <Link href="#" className={style.buyTicket}>
               BUY TICKETS
-            </a>
+            </Link>
           </div>
 
           {/* Back Link */}
           <div className={style.backLink}>
-            <a href="/event/EventList">Back to Events</a>
+            <Link href="/event/EventList">Back to Events</Link>
           </div>
 
           {/* Modal */}

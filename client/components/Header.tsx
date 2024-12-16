@@ -114,9 +114,9 @@ const Header: React.FC = () => {
             </>
           ) : (
             <li>
-              <a href="#" onClick={handleLogout}>
+              <Link href="#" onClick={handleLogout}>
                 Logout
-              </a>
+              </Link>
             </li>
           )}
         </ul>

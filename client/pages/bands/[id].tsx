@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import style from "../../styles/BandDetails.module.css";
+import Link from "next/link";
+
 
 interface Band {
   id: number;
@@ -126,9 +128,9 @@ const BandDetail: React.FC = () => {
               Delete Band
             </button>
             <button>
-              <a href="/bands/BandList" className={style["btn-primary"]}>
+              <Link href="/bands/BandList" className={style["btn-primary"]}>
                 Back to Bands
-              </a>
+              </Link>
             </button>
           </div>
         </>

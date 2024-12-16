@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import style from "../../../styles/BandEdit.module.css";
+import Link from "next/link";
+
 
 interface Band {
   id: number;
@@ -241,9 +243,9 @@ const EditBand: React.FC = () => {
           </form>
 
           <div className={style.bandLink}>
-            <a href={`/bands/${formData.id}`} className={style.backLink}>
+            <Link href={`/bands/${formData.id}`} className={style.backLink}>
               Back to Band Details
-            </a>
+            </Link>
           </div>
         </>
       )}
