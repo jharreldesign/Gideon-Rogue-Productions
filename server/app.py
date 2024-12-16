@@ -15,7 +15,7 @@ app = Flask(__name__)
 # Allow only specific origins to access the API
 CORS(app, origins=[
     "http://localhost:3000", 
-    "https://gideon-rogue-productions-3q6646gxv-jason-harrels-projects.vercel.app"
+    "https://gideon-rogue-productions-b7ts0dwvg-jason-harrels-projects.vercel.app/"
     ])
 
 # Register blueprints for various routes
