@@ -8,6 +8,8 @@ from bands_blueprint import bands_blueprint
 from flask_cors import CORS
 import os
 
+
+
 load_dotenv()
 
 app = Flask(__name__)
