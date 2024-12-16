@@ -15,7 +15,10 @@ load_dotenv()
 app = Flask(__name__)
 
 # Allow only specific origins to access the API
-CORS(app, origins=["http://localhost:3000", "http://yourfrontenddomain.com"])
+CORS(app, origins=[
+    "http://localhost:3000", 
+    "https://gideon-rogue-productions-3q6646gxv-jason-harrels-projects.vercel.app/"
+    ])
 
 # Register blueprints for various routes
 app.register_blueprint(authentication_blueprint)
