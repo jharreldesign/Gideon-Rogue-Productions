@@ -32,7 +32,6 @@ const ShowEdit: React.FC = () => {
     ticketprice: "",
     tourposter: "",
   });
-
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [venues, setVenues] = useState<Venue[]>([]);
   const [bands, setBands] = useState<{ bandname: string; id: number }[]>([]);
@@ -46,26 +45,17 @@ const ShowEdit: React.FC = () => {
     }
 
     const fetchShowDetails = async () => {
-        try {
-          const response = await axios.get(`http://127.0.0.1:5000/shows/${id}`);
-          setFormData(response.data);
-          setIsLoading(false);
-        } catch (error) {
-          const axiosError = error as AxiosError;
-          if (axiosError.response) {
-            setErrorMessage(`Error: ${axiosError.response.data}`);
-          } else if (axiosError.request) {
-            setErrorMessage("No response received from server.");
-          } else {
-            setErrorMessage("Failed to fetch data.");
-          }
-          console.error("Error fetching show details:", axiosError);
-          setIsLoading(false);
-        }
-      };
-      
-      
-      
+      try {
+        const response = await axios.get(`http://127.0.0.1:5000/shows/${id}`);
+        setFormData(response.data);
+        setIsLoading(false); // Set loading to false once data is fetched
+      } catch (error) {
+        const axiosError = error as AxiosError;
+        setErrorMessage("Failed to load show details. Please try again later.");
+        console.error("Error fetching show details:", axiosError.response?.data || axiosError.message);
+        setIsLoading(false);
+      }
+    };
 
     const fetchVenuesAndBands = async () => {
       try {
@@ -107,32 +97,32 @@ const ShowEdit: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     if (!formData.showdate || !formData.showtime || !formData.location || !formData.ticketprice) {
       setErrorMessage("All required fields must be filled out.");
       return;
     }
-
+  
     try {
       const token = localStorage.getItem("token");
-
+  
       if (!token) {
         setErrorMessage("Authentication token is missing.");
         return;
       }
-
+  
       const date = formData.showdate;
       const time = formData.showtime;
       const showtime = `${date} ${time}:00`;
-
+  
       const updatedFormData = { ...formData, showtime };
-
+  
       await axios.put(`http://127.0.0.1:5000/shows/${id}`, updatedFormData, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // Sending token for authorization
         },
       });
-
+  
       router.push("/event/EventList");
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -271,6 +261,8 @@ const ShowEdit: React.FC = () => {
 };
 
 export default ShowEdit;
+
+
 
 
 

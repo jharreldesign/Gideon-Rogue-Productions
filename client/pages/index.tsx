@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Hero from "../components/Hero";
-import EventList from "../pages/event/EventList"; 
+import EventList from "../pages/event/EventList";
 import Footer from "../components/Footer";
 import styles from "../styles/Index.module.css";
 import Image from "next/image";
@@ -21,6 +21,7 @@ interface Show {
 const Index = () => {
   const [shows, setShows] = useState<Show[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const fetchUpcomingShows = () => {
     fetch("http://127.0.0.1:5000/shows", {
@@ -41,16 +42,49 @@ const Index = () => {
     fetchUpcomingShows();
   }, []);
 
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % shows.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? shows.length - 1 : prevIndex - 1
+    );
+  };
+
   return (
     <div className={styles.pageContainer}>
       <Hero className={styles.heroSection} />
+      
+      {/* Carousel for Tour Posters */}
+      <div className="carousel-container">
+        <button onClick={prevSlide} className="carousel-arrow prev-arrow">
+          &lt;
+        </button>
+        <div className="carousel-slides">
+          {shows.slice(currentIndex, currentIndex + 3).map((show) => (
+            <div key={show.id} className="carousel-slide">
+              <a href={show.tourUrl} target="_blank" rel="noopener noreferrer">
+                <img
+                  src={show.tourposter}
+                  alt={`Tour poster for ${show.bandsplaying.join(", ")}`}
+                  className="tour-poster"
+                />
+              </a>
+            </div>
+          ))}
+        </div>
+        <button onClick={nextSlide} className="carousel-arrow next-arrow">
+          &gt;
+        </button>
+      </div>
+
       <section className={styles.tourPosters}>
         <h2>Upcoming Tours</h2>
         <div className={styles.posterGallery}>
           {shows.slice(0, 6).map((show) => (
             <div key={show.id} className={styles.poster}>
               <Link href={`/shows/${show.id}`} passHref>
-
                 <Image
                   src={show.tourposter}
                   alt={`Tour Poster for ${show.bandsplaying.join(", ")}`}

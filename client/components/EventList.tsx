@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import styles from "../styles/EventList.module.css";
+import styles from "../../styles/EventList.module.css";
 
 interface Show {
   id: number;
@@ -15,18 +15,21 @@ interface Show {
 }
 
 interface EventListProps {
-  shows: Show[];
+  shows: Show[] | undefined;
   error: string | null;
 }
 
-const EventList: React.FC<EventListProps> = ({ shows, error }) => {
+const EventList: React.FC<EventListProps> = ({ shows = [], error }) => {
   const [localShows, setLocalShows] = useState<Show[]>(shows);
   const [localError, setLocalError] = useState<string | null>(error);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
     if (shows.length === 0) {
       fetchShows();
     }
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token); 
   }, [shows]);
 
   const fetchShows = async () => {
@@ -45,7 +48,38 @@ const EventList: React.FC<EventListProps> = ({ shows, error }) => {
         setLocalError("An unknown error occurred.");
       }
     }
-  };  
+  };
+
+  // Delete show function
+  const deleteShow = async (showId: number) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setLocalError("You must be logged in to delete a show.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/shows/${showId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete the show.");
+      }
+
+      // Remove the show from the list after deletion
+      setLocalShows(localShows.filter((show) => show.id !== showId));
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setLocalError(`Error deleting show: ${err.message}`);
+      } else {
+        setLocalError("An unknown error occurred while deleting the show.");
+      }
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -58,7 +92,7 @@ const EventList: React.FC<EventListProps> = ({ shows, error }) => {
               <li key={show.id} className={styles.showItem}>
                 <div className={styles.showImageContainer}>
                   <Image
-                    src={show.tourposter} 
+                    src={show.tourposter}
                     alt={`${show.bandsplaying.join(", ")} Tour Poster`}
                     className={styles.showImage}
                     width={200}
@@ -79,8 +113,28 @@ const EventList: React.FC<EventListProps> = ({ shows, error }) => {
                     <strong>Location:</strong> {show.location}
                   </p>
                   <Link href={`/shows/${show.id}`} passHref>
-                    <button className={styles.viewDetailsButton}>View Details</button>
+                    <button className={`${styles.button} ${styles.viewDetailsButton}`}>
+                      View Details
+                    </button>
                   </Link>
+
+                  <div className={styles.buttonContainer}>
+                    {isLoggedIn && (
+                      <>
+                        <Link href={`/shows/edit/${show.id}`} passHref>
+                          <button className={`${styles.button} ${styles.editButton}`}>
+                            Edit Show
+                          </button>
+                        </Link>
+                        <button
+                          className={`${styles.button} ${styles.deleteButton}`}
+                          onClick={() => deleteShow(show.id)}
+                        >
+                          Delete Show
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </div>
               </li>
             ))}

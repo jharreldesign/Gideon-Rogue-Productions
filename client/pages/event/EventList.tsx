@@ -15,22 +15,22 @@ interface Show {
 }
 
 interface EventListProps {
-  shows: Show[];  // Shows will be passed in as a prop
-  error: string | null; // Error message from the API or server
+  shows: Show[] | undefined;
+  error: string | null;
 }
 
-const EventList: React.FC<EventListProps> = ({ shows = [], error = null }) => {
+const EventList: React.FC<EventListProps> = ({ shows = [], error }) => {
   const [localShows, setLocalShows] = useState<Show[]>(shows);
   const [localError, setLocalError] = useState<string | null>(error);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-  // Fetch the shows only if the prop 'shows' is empty
   useEffect(() => {
     if (shows.length === 0) {
       fetchShows();
-    } else {
-      setLocalShows(shows);  // Use the passed-in shows if available
     }
-  }, [shows]); // Only re-run the effect if 'shows' prop changes
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token); 
+  }, [shows]);
 
   const fetchShows = async () => {
     try {
@@ -50,6 +50,37 @@ const EventList: React.FC<EventListProps> = ({ shows = [], error = null }) => {
     }
   };
 
+  // Delete show function
+  const deleteShow = async (showId: number) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setLocalError("You must be logged in to delete a show.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/shows/${showId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete the show.");
+      }
+
+      // Remove the show from the list after deletion
+      setLocalShows(localShows.filter((show) => show.id !== showId));
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setLocalError(`Error deleting show: ${err.message}`);
+      } else {
+        setLocalError("An unknown error occurred while deleting the show.");
+      }
+    }
+  };
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Event List</h1>
@@ -60,9 +91,8 @@ const EventList: React.FC<EventListProps> = ({ shows = [], error = null }) => {
             {localShows.map((show) => (
               <li key={show.id} className={styles.showItem}>
                 <div className={styles.showImageContainer}>
-                  {/* Check if tourposter exists and provide a fallback */}
                   <Image
-                    src={show.tourposter || "/default-poster.jpg"} // Use a default image if no tourposter is available
+                    src={show.tourposter}
                     alt={`${show.bandsplaying.join(", ")} Tour Poster`}
                     className={styles.showImage}
                     width={200}
@@ -83,8 +113,28 @@ const EventList: React.FC<EventListProps> = ({ shows = [], error = null }) => {
                     <strong>Location:</strong> {show.location}
                   </p>
                   <Link href={`/shows/${show.id}`} passHref>
-                    <button className={styles.viewDetailsButton}>View Details</button>
+                    <button className={`${styles.button} ${styles.viewDetailsButton}`}>
+                      View Details
+                    </button>
                   </Link>
+
+                  <div className={styles.buttonContainer}>
+                    {isLoggedIn && (
+                      <>
+                        <Link href={`/shows/edit/${show.id}`} passHref>
+                          <button className={`${styles.button} ${styles.editButton}`}>
+                            Edit Show
+                          </button>
+                        </Link>
+                        <button
+                          className={`${styles.button} ${styles.deleteButton}`}
+                          onClick={() => deleteShow(show.id)}
+                        >
+                          Delete Show
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </div>
               </li>
             ))}

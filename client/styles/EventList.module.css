@@ -30,7 +30,7 @@
 
 .showItem {
   display: flex;
-  flex-direction: row; 
+  flex-direction: row;
   background-color: #ffffff;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
@@ -45,15 +45,15 @@
 }
 
 .showImageContainer {
-  width: 150px; 
+  width: 150px;
   height: auto;
-  margin-right: 1.5rem; 
+  margin-right: 1.5rem;
   border-radius: 8px;
   overflow: hidden;
 }
 
 .showImage {
-  width: 100%; 
+  width: 100%;
   height: auto;
   object-fit: cover;
   border-radius: 8px;
@@ -63,7 +63,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  flex-grow: 1; 
+  flex-grow: 1;
 }
 
 .showInfo h2 {
@@ -90,12 +90,6 @@
   color: #9ca3af;
 }
 
-.buttonsContainer {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
 .button {
   display: inline-block;
   padding: 0.75rem 1.5rem;
@@ -108,6 +102,7 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
   border: none;
   cursor: pointer;
+  margin: 0.5rem;
 }
 
 .button:hover {
@@ -115,20 +110,46 @@
   transform: scale(1.05);
 }
 
+.button:active {
+  background-color: #003d7a;
+}
+
+.viewDetailsButton {
+  background-color: #007BFF;
+}
+
+.viewDetailsButton:hover {
+  background-color: #0056b3;
+}
+
+.deleteButton {
+  background-color: #DC3545;
+}
+
+.deleteButton:hover {
+  background-color: #c82333;
+}
+
+.deleteButton:active {
+  background-color: #9a1d2e;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
 .editEventButton {
-  background-color: #FFC107; /* Amber color for edit */
+  background-color: #FFC107;
 }
 
 .editEventButton:hover {
   background-color: #e0a800;
 }
 
-.deleteEventButton {
-  background-color: #DC3545; /* Red color for delete */
-}
-
-.deleteEventButton:hover {
-  background-color: #c82333;
+.editEventButton:active {
+  background-color: #c88e00;
 }
 
 @media (max-width: 768px) {

@@ -34,35 +34,24 @@ const Dashboard: React.FC = () => {
       return;
     }
 
-    // Fetch user info
     fetch("http://127.0.0.1:5000/auth/me", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to authenticate user.");
-        }
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
         if (data.error) {
           setError(data.error);
         } else {
           setUsername(data.username);
           setUserRole(data.role);
-
-          if (data.role === "admin") {
-            fetchUsers(token); // Fetch users if admin
-          }
-          fetchUpcomingShows(token); // Fetch upcoming shows for all users
+          if (data.role === "admin") fetchUsers(token);
+          fetchUpcomingShows(token);
         }
       })
-      .catch((err: Error) =>
-        setError(`Error fetching user data: ${err.message}`)
-      );
+      .catch((err) => setError(`Error fetching user data: ${err.message}`));
   }, []);
 
   const fetchUpcomingShows = (token: string) => {
@@ -72,12 +61,7 @@ const Dashboard: React.FC = () => {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch shows.");
-        }
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
         if (data.error) {
           setError(data.error);
@@ -85,7 +69,7 @@ const Dashboard: React.FC = () => {
           setShows(data.shows || []);
         }
       })
-      .catch((err: Error) => setError(`Error fetching shows: ${err.message}`));
+      .catch((err) => setError(`Error fetching shows: ${err.message}`));
   };
 
   const fetchUsers = (token: string) => {
@@ -95,12 +79,7 @@ const Dashboard: React.FC = () => {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch users.");
-        }
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => {
         if (data.error) {
           setError(data.error);
@@ -108,7 +87,7 @@ const Dashboard: React.FC = () => {
           setUsers(data || []);
         }
       })
-      .catch((err: Error) => setError(`Error fetching users: ${err.message}`));
+      .catch((err) => setError(`Error fetching users: ${err.message}`));
   };
 
   return (
@@ -134,7 +113,6 @@ const Dashboard: React.FC = () => {
         </div>
       )}
 
-      {/* Pass the fetched shows to EventList */}
       <EventList shows={shows} error={error} />
     </div>
   );
