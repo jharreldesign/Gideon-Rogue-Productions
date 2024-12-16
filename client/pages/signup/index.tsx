@@ -1,14 +1,9 @@
-"use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [streetAddress, setStreetAddress] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
   const [role, setRole] = useState("staff");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -28,9 +23,6 @@ const Signup = () => {
         body: JSON.stringify({
           username,
           password,
-          email,
-          street_address: streetAddress,
-          phone_number: phoneNumber,
           role,
         }),
       });
@@ -74,36 +66,6 @@ const Signup = () => {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            style={{ width: "100%", padding: "0.5em", margin: "0.5em 0" }}
-            required
-          />
-        </div>
-        <div style={{ marginBottom: "1em" }}>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={{ width: "100%", padding: "0.5em", margin: "0.5em 0" }}
-            required
-          />
-        </div>
-        <div style={{ marginBottom: "1em" }}>
-          <label>Street Address:</label>
-          <input
-            type="text"
-            value={streetAddress}
-            onChange={(e) => setStreetAddress(e.target.value)}
-            style={{ width: "100%", padding: "0.5em", margin: "0.5em 0" }}
-            required
-          />
-        </div>
-        <div style={{ marginBottom: "1em" }}>
-          <label>Phone Number:</label>
-          <input
-            type="text"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
             style={{ width: "100%", padding: "0.5em", margin: "0.5em 0" }}
             required
           />
