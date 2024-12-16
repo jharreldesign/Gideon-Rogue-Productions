@@ -27,16 +27,23 @@
   
   /* Styling for the user list */
   .user-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem; /* Space between items */
     list-style-type: none;
     padding: 0;
+    margin: 0;
   }
   
+  /* Individual user item styling */
   .user-item {
-    padding: 0.5rem 1rem;
+    padding: 1rem;
     background-color: #f9fafb;
-    margin-bottom: 0.5rem;
     border-radius: 6px;
+    text-align: center;
     font-size: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.3s ease;
   }
   
   .user-item:hover {

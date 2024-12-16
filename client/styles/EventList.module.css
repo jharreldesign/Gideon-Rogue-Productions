@@ -90,10 +90,15 @@
   color: #9ca3af;
 }
 
-.viewDetailsButton {
+.buttonsContainer {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.button {
   display: inline-block;
   padding: 0.75rem 1.5rem;
-  margin-top: 1rem;
   background-color: #007BFF;
   color: white;
   font-weight: bold;
@@ -105,9 +110,25 @@
   cursor: pointer;
 }
 
-.viewDetailsButton:hover {
+.button:hover {
   background-color: #0056b3;
   transform: scale(1.05);
+}
+
+.editEventButton {
+  background-color: #FFC107; /* Amber color for edit */
+}
+
+.editEventButton:hover {
+  background-color: #e0a800;
+}
+
+.deleteEventButton {
+  background-color: #DC3545; /* Red color for delete */
+}
+
+.deleteEventButton:hover {
+  background-color: #c82333;
 }
 
 @media (max-width: 768px) {
@@ -132,7 +153,7 @@
     font-size: 0.9rem;
   }
 
-  .viewDetailsButton {
+  .button {
     width: 100%;
   }
 }

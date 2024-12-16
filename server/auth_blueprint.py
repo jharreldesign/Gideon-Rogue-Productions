@@ -149,6 +149,38 @@ def get_current_user():
         print(f"Get Current User Error: {error}")
         return jsonify({"error": "Internal server error"}), 500
 
+# --- Route: Get All Users (Admin Only) ---
+@authentication_blueprint.route('/auth/users', methods=['GET'])
+def get_all_users():
+    token = request.headers.get('Authorization')
+    if not token:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    try:
+        # Decode and validate the JWT token
+        token = token.split(" ")[1]
+        decoded_token = jwt.decode(token, os.getenv('JWT_SECRET'), algorithms=["HS256"])
+
+        # Check if the user is an admin
+        if decoded_token.get("role") != "admin":
+            return jsonify({"error": "Access denied. Admins only."}), 403
+
+        # Fetch all users from the database
+        connection = get_db_connection()
+        cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        cursor.execute("SELECT id, username, role FROM users;")
+        users = cursor.fetchall()
+        connection.close()
+
+        return jsonify(users), 200
+
+    except jwt.ExpiredSignatureError:
+        return jsonify({"error": "Token has expired"}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({"error": "Invalid token"}), 401
+    except Exception as error:
+        print(f"Get All Users Error: {error}")
+        return jsonify({"error": "Internal server error"}), 500
 
 
 # #----- TESTING CODE ----------#
