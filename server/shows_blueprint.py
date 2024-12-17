@@ -4,6 +4,7 @@ import psycopg2, psycopg2.extras
 from auth_middleware import token_required
 from datetime import datetime, date
 from flask_cors import CORS
+import traceback
 
 # Define shows_blueprint first
 shows_blueprint = Blueprint('shows_blueprint', __name__)
@@ -48,7 +49,8 @@ def shows_index():
         return jsonify({"shows": shows}), 200
 
     except Exception as error:
-        return jsonify({"error": str(error)}), 500
+        print(f"Error fetching shows: {error}")
+        return jsonify({"error": "Internal Server Error"}), 500
 
 # POST route to create a new show
 @shows_blueprint.route('/shows', methods=['POST'])
@@ -89,7 +91,9 @@ def create_show():
 
         return jsonify({"show": created_show}), 201
     except Exception as error:
-        return jsonify({"error": str(error)}), 500
+        print(f"Error creating show: {error}")
+        traceback.print_exc()  # Log the full traceback for debugging
+        return jsonify({"error": "Internal Server Error"}), 500
 
 # GET route to fetch a single show by its ID
 @shows_blueprint.route('/shows/<show_id>', methods=['GET'])
@@ -114,7 +118,8 @@ def show_show(show_id):
         else:
             return jsonify({"error": "Show not found"}), 404
     except Exception as error:
-        return jsonify({"error": str(error)}), 500
+        print(f"Error fetching show by ID: {error}")
+        return jsonify({"error": "Internal Server Error"}), 500
 
 # PUT route to update a show
 @shows_blueprint.route('/shows/<show_id>', methods=['PUT'])
@@ -160,7 +165,9 @@ def update_show(show_id):
         else:
             return jsonify({"error": "You are not authorized to update this show."}), 403
     except Exception as error:
-        return jsonify({"error": str(error)}), 500
+        print(f"Error updating show: {error}")
+        traceback.print_exc()  # Log the full traceback for debugging
+        return jsonify({"error": "Internal Server Error"}), 500
 
 
 # DELETE route to remove a show
@@ -193,4 +200,5 @@ def delete_show(show_id):
 
     except Exception as error:
         print(f"Error deleting show: {error}")
-        return jsonify({"error": str(error)}), 500
+        traceback.print_exc()  # Log the full traceback for debugging
+        return jsonify({"error": "Internal Server Error"}), 500
