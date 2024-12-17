@@ -6,9 +6,21 @@ import styles from "../styles/Index.module.css";
 import Image from "next/image";
 import Link from "next/link";
 
+interface Show {
+  id: number;
+  bandsplaying: string[];
+  showdescription: string;
+  showdate: string;
+  showtime: string;
+  location: string;
+  ticketprice: number;
+  tourposter: string;
+  tourUrl: string;
+}
+
 const Index = () => {
-  const [shows, setShows] = useState([]);
-  const [error, setError] = useState(null);
+  const [shows, setShows] = useState<Show[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const fetchUpcomingShows = async () => {
@@ -21,8 +33,8 @@ const Index = () => {
       } else {
         setError("Invalid response structure.");
       }
-    } catch (err) {
-      setError(`Error fetching shows: ${err.message}`);
+    } catch (err: unknown) {
+      setError(`Error fetching shows: ${(err as Error).message}`);
     }
   };
 
@@ -106,6 +118,7 @@ const Index = () => {
 };
 
 export default Index;
+
 
 
 
