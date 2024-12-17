@@ -59,7 +59,7 @@ const EventList: React.FC<EventListProps> = ({ shows = [], error }) => {
     }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/shows/${showId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${showId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
