@@ -21,28 +21,28 @@ interface Show {
 const Index = () => {
   const [shows, setShows] = useState<Show[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);  // Added loading state
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState<boolean>(true);  // Loading state to handle spinner display
+  const [currentIndex, setCurrentIndex] = useState<number>(0);  // Ensure correct typing for index
 
   const fetchUpcomingShows = async () => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/shows`);
       if (!response.ok) throw new Error(response.statusText);
       const data = await response.json();
-      if (data && data.shows) {
-        setShows(data.shows);
+      if (data && Array.isArray(data.shows)) {
+        setShows(data.shows);  // Ensure shows is an array
       } else {
         setError("Invalid response structure.");
       }
     } catch (err: unknown) {
       setError(`Error fetching shows: ${(err as Error).message}`);
     } finally {
-      setLoading(false);  // Set loading to false after fetching
+      setLoading(false);  // Stop loading after data is fetched
     }
   };
 
   useEffect(() => {
-    fetchUpcomingShows();
+    fetchUpcomingShows();  // Fetch shows on component mount
   }, []);
 
   const nextSlide = () => {
@@ -61,7 +61,7 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className={styles.spinner}></div>  // Display the spinner while loading
+      <div className={styles.spinner}></div>  // Display loading spinner
     );
   }
 
@@ -119,7 +119,7 @@ const Index = () => {
         <EventList shows={shows} error={error} />
       </section>
 
-      {error && <p className={styles.error}>{error}</p>}  {/* Display error if any */}
+      {error && <p className={styles.error}>{error}</p>}  {/* Display error if there is any */}
       
       <Footer />
     </div>
