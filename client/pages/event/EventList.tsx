@@ -25,21 +25,23 @@ const EventList: React.FC<EventListProps> = ({ shows = [], error }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
-    if (shows.length === 0) {
+    if (shows.length === 0 && !localShows.length) {
       fetchShows();
     }
     const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token); 
-  }, [shows]);
+    setIsLoggedIn(!!token);
+  }, [shows, localShows]);
 
   const fetchShows = async () => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/shows`);
+      if (!response.ok) throw new Error("Failed to fetch shows");
       const data = await response.json();
-      if (data.error) {
-        setLocalError(data.error);
-      } else {
+
+      if (data?.shows && Array.isArray(data.shows)) {
         setLocalShows(data.shows);
+      } else {
+        setLocalError("Invalid response format for shows.");
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -50,7 +52,6 @@ const EventList: React.FC<EventListProps> = ({ shows = [], error }) => {
     }
   };
 
-  // Delete show function
   const deleteShow = async (showId: number) => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -59,7 +60,7 @@ const EventList: React.FC<EventListProps> = ({ shows = [], error }) => {
     }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${showId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/shows/${showId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -71,7 +72,7 @@ const EventList: React.FC<EventListProps> = ({ shows = [], error }) => {
       }
 
       // Remove the show from the list after deletion
-      setLocalShows(localShows.filter((show) => show.id !== showId));
+      setLocalShows((prevShows) => prevShows.filter((show) => show.id !== showId));
     } catch (err: unknown) {
       if (err instanceof Error) {
         setLocalError(`Error deleting show: ${err.message}`);

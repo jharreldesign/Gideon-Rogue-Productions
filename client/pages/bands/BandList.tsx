@@ -13,7 +13,6 @@ interface Band {
 
 
 const BandList: React.FC = () => {
-  // const [username, setUsername] = useState<string>('');
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [bands, setBands] = useState<Band[]>([]);
@@ -36,7 +35,6 @@ const BandList: React.FC = () => {
         if (data.error) {
           setError(data.error);
         } else {
-          // setUsername(data.username);
           setIsAdmin(data.admin || true);
 
           if (data.role === "admin") {
