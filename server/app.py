@@ -27,5 +27,5 @@ app.register_blueprint(bands_blueprint)
 
 if __name__ == "__main__":
     # Use the PORT environment variable from Render, or default to 5000
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
