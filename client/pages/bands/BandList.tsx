@@ -10,6 +10,8 @@ interface Band {
   membernames: string[];
 }
 
+
+
 const BandList: React.FC = () => {
   // const [username, setUsername] = useState<string>('');
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
