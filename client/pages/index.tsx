@@ -27,7 +27,12 @@ const Index = () => {
     fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/shows`, {
       method: "GET",
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+        return response.json();
+      })
       .then((data) => {
         if (data.error) {
           setError(data.error);
@@ -55,7 +60,7 @@ const Index = () => {
   return (
     <div className={styles.pageContainer}>
       <Hero className={styles.heroSection} />
-      
+
       {/* Carousel for Tour Posters */}
       <div className="carousel-container">
         <button onClick={prevSlide} className="carousel-arrow prev-arrow">
@@ -64,7 +69,11 @@ const Index = () => {
         <div className="carousel-slides">
           {shows.slice(currentIndex, currentIndex + 3).map((show) => (
             <div key={show.id} className="carousel-slide">
-              <Link href={show.tourUrl} target="_blank" rel="noopener noreferrer">
+              <Link
+                href={show.tourUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <img
                   src={show.tourposter}
                   alt={`Tour poster for ${show.bandsplaying.join(", ")}`}
@@ -90,7 +99,7 @@ const Index = () => {
                   alt={`Tour Poster for ${show.bandsplaying.join(", ")}`}
                   width={360}
                   height={555}
-                  className={styles.posterLink}  
+                  className={styles.posterLink}
                 />
               </Link>
             </div>
