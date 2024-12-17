@@ -16,7 +16,7 @@ app = Flask(__name__)
 CORS(app, origins=[
     "http://localhost:3000", 
     "https://gideon-rogue-productions.vercel.app",
-    "gideon-rogue-productions-4okewasbx-jason-harrels-projects.vercel.app",
+    "https://gideon-rogue-productions-4okewasbx-jason-harrels-projects.vercel.app",
     ])
 
 # Register blueprints for various routes
