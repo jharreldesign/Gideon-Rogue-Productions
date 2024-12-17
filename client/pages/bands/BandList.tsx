@@ -11,6 +11,7 @@ interface Band {
 }
 
 const BandList: React.FC = () => {
+  // const [username, setUsername] = useState<string>('');
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [bands, setBands] = useState<Band[]>([]);
@@ -33,9 +34,10 @@ const BandList: React.FC = () => {
         if (data.error) {
           setError(data.error);
         } else {
+          // setUsername(data.username);
           setIsAdmin(data.admin || true);
 
-          if (data.role === 'admin') {
+          if (data.role === "admin") {
             fetchBands(token);
           } else {
             setError('You do not have permission to view this page.');
@@ -76,33 +78,33 @@ const BandList: React.FC = () => {
         <div>
           {bands.length > 0 ? (
             <ul style={styles.bandList}>
-              {bands.map((band) => (
-                <li key={band.id} style={styles.bandItem}>
-                  <h2>{band.bandname}</h2>
-                  <h4>{band.hometown}</h4>
-                  <p>
-                    <strong>Genre:</strong> {band.genre}
-                  </p>
-                  <p>
-                    <strong>Year Started:</strong> {band.yearstarted}
-                  </p>
-                  <p>
-                    <strong>Members:</strong> {band.membernames.join(', ')}
-                  </p>
-                  <Link href={`/bands/${band.id}`}>
-                    <a style={styles.viewDetailsButton}>View Details</a>
-                  </Link>
-                </li>
-              ))}
+              {bands.map((band) => {
+                return (
+                  <li key={band.id} style={styles.bandItem}>
+                    <h2>{band.bandname}</h2>
+                    <h4>{band.hometown}</h4>
+                    <p>
+                      <strong>Genre:</strong> {band.genre}
+                    </p>
+                    <p>
+                      <strong>Year Started:</strong> {band.yearstarted}
+                    </p>
+                    <p>
+                      <strong>Members:</strong> {band.membernames.join(', ')}
+                    </p>
+                    <Link href={`/bands/${band.id}`} passHref>
+                      <button style={styles.viewDetailsButton}>View Details</button>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           ) : (
             <p style={styles.noBands}>No bands found.</p>
           )}
         </div>
       ) : (
-        <p style={styles.noPermission}>
-          You do not have permission to view this page.
-        </p>
+        <p style={styles.noPermission}>You do not have permission to view this page.</p>
       )}
     </div>
   );
@@ -119,6 +121,11 @@ const styles: { [key: string]: React.CSSProperties } = {
     textAlign: 'center',
     fontSize: '2rem',
     marginBottom: '20px',
+  },
+  welcome: {
+    textAlign: 'center',
+    fontSize: '1.2rem',
+    color: '#4CAF50',
   },
   error: {
     color: 'red',
