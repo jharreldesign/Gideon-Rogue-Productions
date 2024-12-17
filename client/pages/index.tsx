@@ -156,7 +156,7 @@ interface Show {
 const Index = () => {
   const [shows, setShows] = useState<Show[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // const [currentIndex, setCurrentIndex] = useState(0);
 
   const fetchUpcomingShows = () => {
     fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/shows`, {
@@ -182,21 +182,21 @@ const Index = () => {
     fetchUpcomingShows();
   }, []);
 
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % shows.length);
-  };
+  // const nextSlide = () => {
+  //   setCurrentIndex((prevIndex) => (prevIndex + 1) % shows.length);
+  // };
 
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? shows.length - 1 : prevIndex - 1
-    );
-  };
+  // const prevSlide = () => {
+  //   setCurrentIndex((prevIndex) =>
+  //     prevIndex === 0 ? shows.length - 1 : prevIndex - 1
+  //   );
+  // };
 
   return (
     <div className={styles.pageContainer}>
       <Hero className={styles.heroSection} />
 
-      {/* Carousel for Tour Posters */}
+      {/* Carousel for Tour Posters
       <div className="carousel-container">
         <button onClick={prevSlide} className="carousel-arrow prev-arrow">
           &lt;
@@ -221,7 +221,7 @@ const Index = () => {
         <button onClick={nextSlide} className="carousel-arrow next-arrow">
           &gt;
         </button>
-      </div>
+      </div> */}
 
       <section className={styles.tourPosters}>
         <h2>Upcoming Tours</h2>
