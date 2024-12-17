@@ -29,6 +29,7 @@ def format_show_dates(show):
         show['showtime'] = None
     return show
 
+
 # GET route to fetch all shows
 @shows_blueprint.route('/shows', methods=['GET'])
 def shows_index():

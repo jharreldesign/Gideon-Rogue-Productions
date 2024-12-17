@@ -5,7 +5,6 @@ import Modal from '../../components/Modal';
 import Image from 'next/image';
 import Link from "next/link";
 
-
 interface Show {
   id: number;
   showdate: string;
@@ -33,25 +32,28 @@ const ShowDetail: React.FC = () => {
 
   const fetchShowDetails = async (showId: string) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${showId}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/shows/${showId}`);
       const data = await response.json();
       if (data.error) {
         setError(data.error);
       } else {
         setShow(data.show);
       }
-    } catch {
-      setError('Error fetching show details');
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);  // Use the error's message
+      } else {
+        setError('Error fetching show details');
+      }
     }
   };
+  
 
-  // Function to format the time to a 12-hour format with AM/PM
   const formatTime = (time: string) => {
     const [hours, minutes] = time.split(':').map(Number); 
     const date = new Date();
     date.setHours(hours, minutes);
 
-    // Use toLocaleString for 12-hour format with AM/PM
     return date.toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
   };
 
@@ -85,16 +87,10 @@ const ShowDetail: React.FC = () => {
           {/* Show Info */}
           <div className={style.eventInfo}>
             <div className={style.bandInfo}>
-              <br />
-              <br />
-              <br />
-              <p>Date: {new Date(show.showdate).toLocaleDateString()}</p>
-              <br />
-              <p>Time: {formatTime(show.showtime)}</p> 
-              <br />
-              <p>Location: {show.location}</p>
-              <br />
-              <p>Price: ${show.ticketprice}</p>
+              <p><strong>Date:</strong> {new Date(show.showdate).toLocaleDateString()}</p>
+              <p><strong>Time:</strong> {formatTime(show.showtime)}</p> 
+              <p><strong>Location:</strong> {show.location}</p>
+              <p><strong>Price:</strong> ${show.ticketprice}</p>
             </div>
 
             {/* Tour Poster Image */}
@@ -107,7 +103,7 @@ const ShowDetail: React.FC = () => {
                 height={800} 
                 objectFit="contain" 
                 className={style.tourPoster} 
-                />
+              />
             </div>
           </div>
 
@@ -127,7 +123,7 @@ const ShowDetail: React.FC = () => {
 
           {/* Actions */}
           <div className={style.actions}>
-            <Link href="#" className={style.buyTicket}>
+            <Link href={`/tickets/${show.id}`} className={style.buyTicket}>
               BUY TICKETS
             </Link>
           </div>
