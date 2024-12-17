@@ -21,6 +21,7 @@ interface Show {
 const Index = () => {
   const [shows, setShows] = useState<Show[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);  // Added loading state
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const fetchUpcomingShows = async () => {
@@ -35,6 +36,8 @@ const Index = () => {
       }
     } catch (err: unknown) {
       setError(`Error fetching shows: ${(err as Error).message}`);
+    } finally {
+      setLoading(false);  // Set loading to false after fetching
     }
   };
 
@@ -55,6 +58,12 @@ const Index = () => {
       );
     }
   };
+
+  if (loading) {
+    return (
+      <div className={styles.spinner}></div>  // Display the spinner while loading
+    );
+  }
 
   return (
     <div className={styles.pageContainer}>
@@ -110,14 +119,15 @@ const Index = () => {
         <EventList shows={shows} error={error} />
       </section>
 
-      {error && <p className={styles.error}>{error}</p>}
-
+      {error && <p className={styles.error}>{error}</p>}  {/* Display error if any */}
+      
       <Footer />
     </div>
   );
 };
 
 export default Index;
+
 
 
 
